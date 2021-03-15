@@ -1,24 +1,38 @@
 import logo from './logo.svg';
 import './App.css';
+import Button from '@material-ui/core/Button';
+import Dashboard from './admin/Dashboard'
+import { BrowserRouter as Router, Route, Redirect, Link } from 'react-router-dom'
+
+function Error(){
+  return (
+    <div>
+      <h1>Error, no se ha encontrado la página que buscas</h1>
+      <h2>Ir a la página de <Link to='/'>Inicio</Link></h2>
+    </div>
+  )
+}
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Route exact path='/'>
+        <Redirect to='/productos' />
+      </Route>
+
+      <Route exact path='/productos'>
+        <Dashboard main="productos"/>
+      </Route>
+
+      <Route exact path='/eventos'>
+        <Dashboard main="eventos"/>
+      </Route>
+
+      <Route>
+        <Error />
+      </Route>
+    </Router>
+    
   );
 }
 
