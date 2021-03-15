@@ -11,7 +11,7 @@ export default function ProductsList(props) {
     // id
     // history.push(`/${sectionName}`) productos/agregar
     // editar hasta la derecha push productos/id
-    let data = [{id:
+   /* let data = [{id:
                 nombre:
                 descripcion:
                 img:
@@ -24,7 +24,7 @@ export default function ProductsList(props) {
                         nombre:
                         descripcion:
                         img:
-                        precio:}]
+                        precio:}]*/
     return (
         <h3>Hola</h3>
     )
