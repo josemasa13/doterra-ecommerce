@@ -129,7 +129,6 @@ export default function Dashboard(props) {
     const [section, setSection] = React.useState('Productos');
     var main = ProductsList
 
-
     const handleDrawerOpen = () => {
         setOpen(true);
     };
@@ -140,11 +139,10 @@ export default function Dashboard(props) {
     function handleSection(sectionName) {
         setSection(sectionName)
         history.push(`/${sectionName}`)
-
     }
 
 
-    if (props.main == "productos"){
+    if (props.main === "productos"){
         main = <ProductsList/>
     } else{
         main = <EventsList/>
@@ -210,7 +208,7 @@ export default function Dashboard(props) {
 
         <main className={classes.content}>
             <div className={classes.appBarSpacer} />
-            {main}
+            { props.main }
         </main>
         </div>
     );
