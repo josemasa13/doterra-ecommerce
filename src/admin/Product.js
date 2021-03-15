@@ -56,9 +56,6 @@ export default function Product(props) {
                         <TextField required id="standard-required" label="Precio $"/>
                     </form>
                 </Paper>
-
-
-                
                    
             </Grid>
           </Grid>
