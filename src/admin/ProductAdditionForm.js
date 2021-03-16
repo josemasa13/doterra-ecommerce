@@ -8,11 +8,8 @@ import TextField from '@material-ui/core/TextField';
 import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import { Container } from '@material-ui/core';
-import { fetchProduct } from '../utils/api'
-import { useHistory, useRouteMatch, useParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
-
-
+import AddCircleIcon from '@material-ui/icons/AddCircle';
+import IconButton from '@material-ui/core/IconButton';
 
 
 const productData = {
@@ -23,8 +20,6 @@ const productData = {
 }
 
 const useStyles = makeStyles((theme) => ({
-
-
   paper: {
     margin: theme.spacing(2),
     padding: theme.spacing(2),
@@ -46,39 +41,25 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-
-
-
-export default function Product(props) {
+export default function ProductAdditionForm(props) {
     const { register, handleSubmit, watch, errors } = useForm();
     const onSubmit = data => console.log(data);
     const classes = useStyles();
-    const [productInfo, setProductInfo] = useState({})
-    const { productId } = useParams()
-
-    useEffect(() => {
-        fetchProduct(productId)
-        .then((data) => {
-            setProductInfo(data)
-            console.log(productInfo)
-        })
-    }, [])
-
   
     return (
         <div className={classes.root}>
-            <Typography className={classes.margin} align="center" variant="h5">Editar producto</Typography>
+            <Typography className={classes.margin} align="center" variant="h5">Agregar Producto</Typography>
             <Grid container spacing={1}>
                 <Grid item xs={12} sm={8}>
                     <Paper className={classes.paper}>
                         <Grid container spacing={3}>
                             <Grid item xs={3} />
                             <Grid alignContents="center" item xs={6}>
-                                <CardMedia
-                                    className={classes.media}
-                                    image={productData.imagen}
-                                    title="Paella dish"
-                                />
+                                <IconButton aria-label="Add image">
+                                    <AddCircleIcon fontSize="large"/>
+                                </IconButton>
+                                <br/>
+                                Agregar imagen
                             </Grid>
                             <Grid item xs={3} />
                         </Grid>

@@ -5,6 +5,7 @@ import Dashboard from './admin/Dashboard'
 import ProductsList from './admin/ProductsList'
 import EventsList from './admin/EventsList'
 import Product from './admin/Product'
+import ProductAdditionForm from './admin/ProductAdditionForm'
 import { BrowserRouter as Router, Route, Redirect, Link } from 'react-router-dom'
 
 function Error(){
@@ -27,21 +28,20 @@ function App() {
         <Dashboard main={<ProductsList />} />
       </Route>
 
-      <Route exact path="/productos/:productId">
-        <Dashboard main={<Product mode="editar"/>} />
+      <Route exact path="/productos/agregar">
+        <Dashboard main={<ProductAdditionForm />} />
       </Route>
 
-      <Route exact path="/productos/agregar">
-        <Dashboard main={<Product mode="agregar"/>} />
+      <Route exact path="/productos/:productId">
+        <Dashboard main={<Product/>} />
       </Route>
+      
 
       <Route exact path='/eventos'>
         <Dashboard main={<EventsList />}/>
       </Route>
 
-      <Route>
-        <Error />
-      </Route>
+    
     </Router>
     
   );
