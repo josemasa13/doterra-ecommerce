@@ -34,7 +34,7 @@ const data = [
   {id:3,nombre:'Frozen yoghurt', img:'logo192.png',descripcion:"hlfdhlfhkjf",precio:34,cantidad:343}
 ];
 
-export default function ProductsList() {
+export default function ProductsList(props) {
   const classes = useStyles();
   const history = useHistory();
   const [checked, setChecked] = React.useState([]);
@@ -50,8 +50,6 @@ export default function ProductsList() {
     history.push(`/Product/${productid}`)
   }
   
-  
-
   return (
     <TableContainer component={Paper}>
       <Table className={classes.table} size="medium" aria-label="a dense table">
@@ -67,7 +65,6 @@ export default function ProductsList() {
             <DeleteForeverIcon className={classes.icon} />
             </Button>
         </TableCell>
-        
       </TableRow>
           </TableHead>  
           <TableRow>
