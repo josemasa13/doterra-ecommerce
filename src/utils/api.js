@@ -7,13 +7,28 @@ export function fetchProduct(productId){
         method: 'GET',
         headers: { 'Content-Type': 'application/json'}
     };
-    
+
     return fetch(endpoint, requestOptions)
             .then((res) => {
                 return res.json();
             })
     
 }
+
+export function createProduct(productId){
+    const endpoint = `${url}/addProduct`
+    
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json'}
+    };
+    
+    return fetch(endpoint, requestOptions)
+            .then((res) => {
+                return res.json();
+            })
+}
+
 
 export function fetchProducts(){
     const endpoint = `${url}/getProducts`
@@ -27,7 +42,6 @@ export function fetchProducts(){
             .then((res) => {
                 return res.json();
             })
-    
 }
 
 export function deleteProduct(productId){
@@ -42,5 +56,4 @@ export function deleteProduct(productId){
             .then((res) => {
                 return res.json();
             })
-    
 }

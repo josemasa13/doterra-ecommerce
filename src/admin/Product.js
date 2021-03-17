@@ -15,6 +15,8 @@ import { useEffect, useState } from 'react';
 
 
 
+
+
 const productData = {
     nombre: "Aceite Esencial",
     descripcion: "Este aceite logra curar todos los males",
@@ -88,9 +90,9 @@ export default function Product(props) {
                 <Grid height="100%" item xs={12} sm={4}>
                     <Paper className={classes.paper}>
                         <form className={classes.margin}>
-                            <TextField fullWidth required id="standard-required" label="Nombre de producto"/>
-                            <TextField fullWidth required multiline id="standard-multiline" label="Descripción del producto" rows={8} />
-                            <TextField fullWidth required id="standard-required" label="Precio $"/>
+                            <TextField fullWidth required id="standard-required" label="Nombre de producto" value={productInfo.name} InputLabelProps={{ shrink: true }} />
+                            <TextField fullWidth required multiline id="standard-multiline" label="Descripción del producto" rows={8} value={productInfo.desc} InputLabelProps={{ shrink: true }}/>
+                            <TextField fullWidth required id="standard-required" label="Precio $" InputLabelProps={{ shrink: true }} value={productInfo.price}/>                    
                             <Button variant="contained" size="large" color="primary" className={classes.margin}>Guardar</Button>
                         </form>
                     </Paper>
