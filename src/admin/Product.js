@@ -12,7 +12,7 @@ import { fetchProduct } from '../utils/api'
 import { useHistory, useRouteMatch, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { updateProduct } from '../utils/api'
-
+import { Loader } from '../common/Loader'
 
 
 
@@ -62,6 +62,8 @@ export default function Product(props) {
     const [productQty, setProductQty] = useState("")
     const { productId } = useParams()
     const [ saved, setSaved ] = useState(false)
+    const [loading, setLoading] = React.useState(true)
+
 
     const onSubmit = data => {
         updateProduct(productId, data)
@@ -69,9 +71,6 @@ export default function Product(props) {
             setSaved(true)
         })
     };
-
-
-    
 
     useEffect(() => {
         fetchProduct(productId)
@@ -81,6 +80,7 @@ export default function Product(props) {
             setProductDescription(data.desc)
             setProductPrice(data.price)
             setProductQty(data.qty)
+            setLoading(false)
         })
     }, [])
 
@@ -88,7 +88,8 @@ export default function Product(props) {
     return (
         <div className={classes.root}>
             <Typography className={classes.margin} align="center" variant="h5">Editar producto</Typography>
-            <Grid container spacing={1}>
+            {loading &&  <Loader />}
+            {!loading && <Grid container spacing={1}>
                 <Grid item xs={12} sm={8}>
                     <Paper className={classes.paper}>
                         <Grid container spacing={3}>
@@ -105,7 +106,10 @@ export default function Product(props) {
                     </Paper>
                 </Grid>
 
+                
                 <Grid height="100%" item xs={12} sm={4}>
+                    
+
                     <Paper className={classes.paper}>
                         <form onSubmit={handleSubmit(onSubmit)} className={classes.margin}>
                             <TextField name="name" fullWidth required id="standard-required" label="Nombre de producto" inputRef={register({ required: true })} InputLabelProps={{ shrink: true }} value = {productName} onChange={e => {
@@ -125,9 +129,9 @@ export default function Product(props) {
                             </Button>
                         </form>
                         {saved && <h2>La información del producto se ha guardado</h2>}
-                    </Paper> 
+                    </Paper>
                 </Grid>
-            </Grid>
+            </Grid>}
         </div>
       );
 }

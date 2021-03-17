@@ -6,7 +6,7 @@ import ProductsList from './admin/ProductsList'
 import EventsList from './admin/EventsList'
 import Product from './admin/Product'
 import ProductAdditionForm from './admin/ProductAdditionForm'
-import { BrowserRouter as Router, Route, Redirect, Link } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Redirect, Link, Switch } from 'react-router-dom'
 
 function Error(){
   return (
@@ -20,28 +20,30 @@ function Error(){
 function App() {
   return (
     <Router>
-      <Route exact path='/'>
-        <Redirect to='/productos' />
-      </Route>
+      <Switch>
+        <Route exact path='/'>
+          <Redirect to='/productos' />
+        </Route>
 
-      <Route exact path='/productos'>
-        <Dashboard main={<ProductsList />} />
-      </Route>
+        <Route exact path='/productos'>
+          <Dashboard main={<ProductsList />} />
+        </Route>
 
-      <Route exact path="/productos/agregar">
-        <Dashboard main={<ProductAdditionForm />} />
-      </Route>
+        <Route exact path="/productos/agregar">
+          <Dashboard main={<ProductAdditionForm />} />
+        </Route>
 
-      <Route exact path="/productos/:productId">
-        <Dashboard main={<Product/>} />
-      </Route>
+        <Route path="/productos/:productId">
+          <Dashboard main={<Product/>} />
+        </Route>
+        
+
+        <Route exact path='/eventos'>
+          <Dashboard main={<EventsList />}/>
+        </Route>
+
       
-
-      <Route exact path='/eventos'>
-        <Dashboard main={<EventsList />}/>
-      </Route>
-
-    
+      </Switch>
     </Router>
     
   );

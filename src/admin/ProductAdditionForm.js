@@ -60,6 +60,7 @@ export default function ProductAdditionForm(props) {
             setSaved(true)
         })
     };
+    
     const classes = useStyles();
   
     return (

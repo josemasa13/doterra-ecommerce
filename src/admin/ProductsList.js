@@ -15,10 +15,18 @@ import { useHistory } from "react-router-dom";
 import EditIcon from '@material-ui/icons/Edit';
 import { fetchProducts,deleteProduct } from '../utils/api';
 import { useEffect, useState } from 'react';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 
 
-const useStyles = makeStyles({
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    display: 'flex',
+    '& > * + *': {
+      marginLeft: theme.spacing(2),
+    },
+  },
   table: {
     minWidth: 650
   },
@@ -28,12 +36,21 @@ const useStyles = makeStyles({
   icon: {
     fontSize: 32,
   }
-});
+}));
+
+function Loader(){
+  return (
+    <CircularProgress />
+  )
+}
+
+
 export default function ProductsList() {
   const classes = useStyles();
   const history = useHistory();
   const [checked, setChecked] = React.useState([]);
   const [data, setProductInfo] = React.useState([]);
+  const [loading, setLoading] = React.useState(true)
   let datos_eliminados = []
 
   const handleChange = (event) => {
@@ -89,56 +106,62 @@ export default function ProductsList() {
     fetchProducts()
     .then((data) => {
         setProductInfo(data)
-        console.log(data)
+        setLoading(false);
     })
 }, [])
   
 
   return (
-    <TableContainer component={Paper}>
-      <Table className={classes.table} size="medium" aria-label="a dense table">
-      <TableHead>
-      <TableRow>
-        <TableCell> 
-            <Button variant="contained" color="primary" onClick={() => handleSection('productos/agregar')} >
-            <AddCircleIcon className="fa fa-plus-circle" />
-            </Button>
-        </TableCell>
-        <TableCell> 
-            <Button variant="contained" color="primary"  onClick={borrarProductos} >
-            <DeleteForeverIcon className={classes.icon} />
-            </Button>
-        </TableCell>
-        
-      </TableRow>
-          </TableHead>  
-          <TableRow>
-          <TableCell align="left">Seleccionar</TableCell>
-            <TableCell align="left">Imagen</TableCell>
-            <TableCell align="left">Nombre</TableCell>
-            <TableCell align="left">Descripcion</TableCell>
-            <TableCell align="left">Cantidad</TableCell>
-            <TableCell align="left">Precio</TableCell>
-            <TableCell align="left">Editar</TableCell>
-          </TableRow>
-        <TableBody>
-          {data.map((product) => (
-            <TableRow key={product.id} >
-              <TableCell align="left"><Checkbox value={product.productId} onChange={handleChange} inputProps={{ 'aria-label': 'primary checkbox' }}/></TableCell>
-              <TableCell align="left"><img src="https://cdn.shopify.com/s/files/1/1355/3237/products/doTERRA-Whisper-Essential-Oil-Blend-for-Women-0_1024x1024.jpg?v=1579880250" alt="Logo" height="100" width="100" /></TableCell>
-              <TableCell align="left">{product.name}</TableCell>
-              <TableCell align="left">{product.desc}</TableCell>
-              <TableCell align="left">{product.qty}</TableCell>
-              <TableCell align="left">{product.price}</TableCell>
-              <TableCell> 
-            <Button variant="contained" color="primary"  onClick={() => handleSectionEdit(product.productId)} >
-            <EditIcon className={classes.icon} />
-            </Button>
-        </TableCell>
+    <div className={classes.root}>
+      {loading && <Loader />}
+
+      {!loading && <TableContainer component={Paper}>
+        <Table className={classes.table} size="medium" aria-label="a dense table">
+        <TableHead>
+        <TableRow>
+    
+          <TableCell> 
+              <Button variant="contained" color="primary" onClick={() => handleSection('productos/agregar')} >
+              <AddCircleIcon className="fa fa-plus-circle" />
+              </Button>
+          </TableCell>
+          <TableCell> 
+              <Button variant="contained" color="primary"  onClick={borrarProductos} >
+              <DeleteForeverIcon className={classes.icon} />
+              </Button>
+          </TableCell>
+          
+        </TableRow>
+            </TableHead>  
+            <TableRow>
+            <TableCell align="left">Seleccionar</TableCell>
+              <TableCell align="left">Imagen</TableCell>
+              <TableCell align="left">Nombre</TableCell>
+              <TableCell align="left">Descripcion</TableCell>
+              <TableCell align="left">Cantidad</TableCell>
+              <TableCell align="left">Precio</TableCell>
+              <TableCell align="left">Editar</TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+          <TableBody>
+            
+            {data.map((product) => (
+              <TableRow key={product.id} >
+                <TableCell align="left"><Checkbox value={product.productId} onChange={handleChange} inputProps={{ 'aria-label': 'primary checkbox' }}/></TableCell>
+                <TableCell align="left"><img src="https://cdn.shopify.com/s/files/1/1355/3237/products/doTERRA-Whisper-Essential-Oil-Blend-for-Women-0_1024x1024.jpg?v=1579880250" alt="Logo" height="100" width="100" /></TableCell>
+                <TableCell align="left">{product.name}</TableCell>
+                <TableCell align="left">{product.desc}</TableCell>
+                <TableCell align="left">{product.qty}</TableCell>
+                <TableCell align="left">{product.price}</TableCell>
+                <TableCell> 
+              <Button variant="contained" color="primary"  onClick={() => handleSectionEdit(product.productId)} >
+              <EditIcon className={classes.icon} />
+              </Button>
+          </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>}
+    </div>
   );
 }
