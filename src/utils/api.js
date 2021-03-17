@@ -14,3 +14,33 @@ export function fetchProduct(productId){
             })
     
 }
+
+export function fetchProducts(){
+    const endpoint = `${url}/getProducts`
+    
+    const requestOptions = {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json'}
+    };
+    
+    return fetch(endpoint, requestOptions)
+            .then((res) => {
+                return res.json();
+            })
+    
+}
+
+export function deleteProduct(productId){
+    const endpoint = `${url}/deleteProduct/${productId}`
+    
+    const requestOptions = {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json'}
+    };
+    
+    return fetch(endpoint, requestOptions)
+            .then((res) => {
+                return res.json();
+            })
+    
+}
