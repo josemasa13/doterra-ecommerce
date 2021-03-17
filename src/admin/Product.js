@@ -11,6 +11,7 @@ import { Container } from '@material-ui/core';
 import { fetchProduct } from '../utils/api'
 import { useHistory, useRouteMatch, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import { updateProduct } from '../utils/api'
 
 
 
@@ -53,16 +54,33 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Product(props) {
     const { register, handleSubmit, watch, errors } = useForm();
-    const onSubmit = data => console.log(data);
     const classes = useStyles();
     const [productInfo, setProductInfo] = useState({})
+    const [productName, setProductName] = useState("")
+    const [productDescription, setProductDescription] = useState("")
+    const [productPrice, setProductPrice] = useState("")
+    const [productQty, setProductQty] = useState("")
     const { productId } = useParams()
+    const [ saved, setSaved ] = useState(false)
+
+    const onSubmit = data => {
+        updateProduct(productId, data)
+        .then((data) => {
+            setSaved(true)
+        })
+    };
+
+
+    
 
     useEffect(() => {
         fetchProduct(productId)
         .then((data) => {
             setProductInfo(data)
-            console.log(productInfo)
+            setProductName(data.name)
+            setProductDescription(data.desc)
+            setProductPrice(data.price)
+            setProductQty(data.qty)
         })
     }, [])
 
@@ -89,13 +107,25 @@ export default function Product(props) {
 
                 <Grid height="100%" item xs={12} sm={4}>
                     <Paper className={classes.paper}>
-                        <form className={classes.margin}>
-                            <TextField fullWidth required id="standard-required" label="Nombre de producto" value={productInfo.name} InputLabelProps={{ shrink: true }} />
-                            <TextField fullWidth required multiline id="standard-multiline" label="Descripción del producto" rows={8} value={productInfo.desc} InputLabelProps={{ shrink: true }}/>
-                            <TextField fullWidth required id="standard-required" label="Precio $" InputLabelProps={{ shrink: true }} value={productInfo.price}/>                    
-                            <Button variant="contained" size="large" color="primary" className={classes.margin}>Guardar</Button>
+                        <form onSubmit={handleSubmit(onSubmit)} className={classes.margin}>
+                            <TextField name="name" fullWidth required id="standard-required" label="Nombre de producto" inputRef={register({ required: true })} InputLabelProps={{ shrink: true }} value = {productName} onChange={e => {
+                                setProductName(e.target.value)
+                            }}/>
+                            <TextField name="desc"fullWidth required multiline id="standard-multiline" label="Descripción del producto" rows={8} inputRef={register({ required: true })}  InputLabelProps={{ shrink: true }} value = {productDescription} onChange={e => {
+                                setProductDescription(e.target.value)
+                            }}/>
+                            <TextField name="price" fullWidth required id="standard-required" label="Precio $" inputRef={register({ required: true })} InputLabelProps={{ shrink: true }} value = {productPrice} onChange={e => {
+                                setProductPrice(e.target.value)
+                            }}/>
+                            <TextField name="qty" fullWidth required id="standard-required" label="Cantidad" inputRef={register({ required: true })} InputLabelProps={{ shrink: true }} value = {productQty} onChange={e => {
+                                setProductQty(e.target.value)
+                            }}/>
+                            <Button type="submit" variant="contained" size="large" color="primary" className={classes.margin}>
+                                Guardar
+                            </Button>
                         </form>
-                    </Paper>
+                        {saved && <h2>La información del producto se ha guardado</h2>}
+                    </Paper> 
                 </Grid>
             </Grid>
         </div>

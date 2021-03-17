@@ -93,7 +93,7 @@ export default function ProductAdditionForm(props) {
                                 Guardar
                             </Button>
                         </form>
-                        {saved && <Saved/>}
+                        {saved && <h2>El producto se ha agregado</h2>}
                     </Paper>
                 </Grid>
             </Grid>

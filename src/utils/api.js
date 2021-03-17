@@ -15,12 +15,13 @@ export function fetchProduct(productId){
     
 }
 
-export function createProduct(productId){
+export function createProduct(productData){
     const endpoint = `${url}/addProduct`
     
     const requestOptions = {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json'}
+        headers: { 'Content-Type': 'application/json'},
+        body: JSON.stringify(productData)
     };
     
     return fetch(endpoint, requestOptions)
@@ -29,6 +30,24 @@ export function createProduct(productId){
             })
 }
 
+export function updateProduct(productId, productData){
+    const endpoint = `${url}/updateProduct`
+    
+    const requestOptions = {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json'},
+        body: JSON.stringify(
+            {
+                productId,
+                ...productData
+            })
+    };
+    
+    return fetch(endpoint, requestOptions)
+            .then((res) => {
+                return res.json();
+            })
+}
 
 export function fetchProducts(){
     const endpoint = `${url}/getProducts`
