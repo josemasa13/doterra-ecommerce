@@ -13,6 +13,10 @@ import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import { useHistory } from "react-router-dom";
 import EditIcon from '@material-ui/icons/Edit';
+import { fetchProducts,deleteProduct } from '../utils/api';
+import { useEffect, useState } from 'react';
+
+
 
 const useStyles = makeStyles({
   table: {
@@ -25,30 +29,70 @@ const useStyles = makeStyles({
     fontSize: 32,
   }
 });
-
-
-const data = [
-  {id:0,nombre:'Frozen yoghurt', img:'logo192.png',descripcion:"hlfdhlfhkjf",precio:34,cantidad:343},
-  {id:1,nombre:'Frozen yoghurt', img:'logo192.png',descripcion:"hlfdhlfhkjf",precio:34,cantidad:343},
-  {id:2,nombre:'Frozen yoghurt', img:'logo192.png',descripcion:"hlfdhlfhkjf",precio:34,cantidad:343},
-  {id:3,nombre:'Frozen yoghurt', img:'logo192.png',descripcion:"hlfdhlfhkjf",precio:34,cantidad:343}
-];
-
 export default function ProductsList() {
   const classes = useStyles();
   const history = useHistory();
   const [checked, setChecked] = React.useState([]);
+  const [data, setProductInfo] = React.useState([]);
+  let datos_eliminados = []
 
   const handleChange = (event) => {
-    console.log(event.target.value)
-    //setChecked(event.target.checked = true);
+
+    let index = -1;
+    for (var i = 0; i<datos_eliminados.length;i++) {
+      if (datos_eliminados[i] == event.target.value){
+        index = i
+      }
+    }
+    if(index != -1){
+      datos_eliminados.splice(index,1)
+      console.log("Eliminado "+event.target.value)
+      console.log(datos_eliminados)
+    }
+    else{
+      datos_eliminados.push(event.target.value)
+      console.log("Agregado "+event.target.value)
+    }
   };
+
   function handleSection(sectionName) {
     history.push(`/${sectionName}`)
   }
   function handleSectionEdit(productid) {
     history.push(`/productos/${productid}`)
   }
+
+  function cargarProdutos(){
+    fetchProducts()
+    .then((datos) => {
+        setProductInfo([])
+        //setProductInfo(datos)
+        //console.log("ENTRO0",datos)
+    })
+  }
+
+  function deleteproducts(productid) {
+    deleteProduct(productid)
+      .then((data) => {
+        console.log(data)
+      }) 
+  }
+  function borrarProductos() {
+    for (var i = 0; i<datos_eliminados.length;i++) {
+      deleteproducts(datos_eliminados[i])
+    }
+    datos_eliminados = []
+    cargarProdutos()
+  }
+
+  useEffect(() => {
+    fetchProducts()
+    .then((data) => {
+        setProductInfo(data)
+        console.log(data)
+    })
+}, [])
+  
 
   return (
     <TableContainer component={Paper}>
@@ -61,7 +105,7 @@ export default function ProductsList() {
             </Button>
         </TableCell>
         <TableCell> 
-            <Button variant="contained" color="primary"  onClick={() => handleSection('eliminar')} >
+            <Button variant="contained" color="primary"  onClick={borrarProductos} >
             <DeleteForeverIcon className={classes.icon} />
             </Button>
         </TableCell>
@@ -80,14 +124,14 @@ export default function ProductsList() {
         <TableBody>
           {data.map((product) => (
             <TableRow key={product.id} >
-              <TableCell align="left"><Checkbox value={product.id} onChange={handleChange} inputProps={{ 'aria-label': 'primary checkbox' }}/></TableCell>
-              <TableCell align="left"><img src={product.img} alt="Logo" height="100" width="100" /></TableCell>
-              <TableCell align="left">{product.nombre}</TableCell>
-              <TableCell align="left">{product.descripcion}</TableCell>
-              <TableCell align="left">{product.cantidad}</TableCell>
-              <TableCell align="left">{product.precio}</TableCell>
+              <TableCell align="left"><Checkbox value={product.productId} onChange={handleChange} inputProps={{ 'aria-label': 'primary checkbox' }}/></TableCell>
+              <TableCell align="left"><img src="https://cdn.shopify.com/s/files/1/1355/3237/products/doTERRA-Whisper-Essential-Oil-Blend-for-Women-0_1024x1024.jpg?v=1579880250" alt="Logo" height="100" width="100" /></TableCell>
+              <TableCell align="left">{product.name}</TableCell>
+              <TableCell align="left">{product.desc}</TableCell>
+              <TableCell align="left">{product.qty}</TableCell>
+              <TableCell align="left">{product.price}</TableCell>
               <TableCell> 
-            <Button variant="contained" color="primary"  onClick={() => handleSectionEdit(product.id)} >
+            <Button variant="contained" color="primary"  onClick={() => handleSectionEdit(product.productId)} >
             <EditIcon className={classes.icon} />
             </Button>
         </TableCell>
