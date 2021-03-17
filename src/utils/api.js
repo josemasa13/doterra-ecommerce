@@ -7,10 +7,24 @@ export function fetchProduct(productId){
         method: 'GET',
         headers: { 'Content-Type': 'application/json'}
     };
-    
+
     return fetch(endpoint, requestOptions)
             .then((res) => {
                 return res.json();
             })
     
+}
+
+export function createProduct(productId){
+    const endpoint = `${url}/addProduct`
+    
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json'}
+    };
+    
+    return fetch(endpoint, requestOptions)
+            .then((res) => {
+                return res.json();
+            })
 }

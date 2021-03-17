@@ -10,6 +10,9 @@ import Button from '@material-ui/core/Button';
 import { Container } from '@material-ui/core';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import IconButton from '@material-ui/core/IconButton';
+import { createProduct } from '../utils/api'
+import { useEffect, useState } from 'react';
+
 
 
 const productData = {
@@ -41,9 +44,22 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+function Saved(props){
+    return(
+        <h2>Tu producto se ha guardado  </h2>
+    )
+
+}
+
 export default function ProductAdditionForm(props) {
     const { register, handleSubmit, watch, errors } = useForm();
-    const onSubmit = data => console.log(data);
+    const [ saved, setSaved ] = useState(false)
+    const onSubmit = data => {
+        createProduct(data)
+        .then((data) => {
+            setSaved(true)
+        })
+    };
     const classes = useStyles();
   
     return (
@@ -68,12 +84,16 @@ export default function ProductAdditionForm(props) {
 
                 <Grid height="100%" item xs={12} sm={4}>
                     <Paper className={classes.paper}>
-                        <form className={classes.margin}>
-                            <TextField fullWidth required id="standard-required" label="Nombre de producto"/>
-                            <TextField fullWidth required multiline id="standard-multiline" label="Descripción del producto" rows={8} />
-                            <TextField fullWidth required id="standard-required" label="Precio $"/>
-                            <Button variant="contained" size="large" color="primary" className={classes.margin}>Guardar</Button>
+                        <form onSubmit={handleSubmit(onSubmit)} className={classes.margin}>
+                            <TextField name="name" fullWidth required id="standard-required" label="Nombre de producto" inputRef={register({ required: true })} />
+                            <TextField name="desc"fullWidth required multiline id="standard-multiline" label="Descripción del producto" rows={8} inputRef={register({ required: true })}  />
+                            <TextField name="price" fullWidth required id="standard-required" label="Precio $" inputRef={register({ required: true })}/>
+                            <TextField name="qty" fullWidth required id="standard-required" label="Cantidad" inputRef={register({ required: true })}/>
+                            <Button type="submit" variant="contained" size="large" color="primary" className={classes.margin}>
+                                Guardar
+                            </Button>
                         </form>
+                        {saved && <Saved/>}
                     </Paper>
                 </Grid>
             </Grid>
