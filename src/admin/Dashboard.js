@@ -17,7 +17,7 @@ import Paper from '@material-ui/core/Paper';
 import Link from '@material-ui/core/Link';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import NotificationsIcon from '@material-ui/icons/Notifications';
+import PersonIcon from '@material-ui/icons/Person';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -26,20 +26,29 @@ import EventIcon from '@material-ui/icons/Event';
 import ProductsList from './ProductsList'
 import EventsList from './EventsList'
 import { useHistory } from "react-router-dom";
+import { useAuth0 } from "@auth0/auth0-react";
+import Button from '@material-ui/core/Button';
 
 
-function Copyright() {
+
+function LoginButton() {
+  const { loginWithRedirect, isAuthenticated } = useAuth0();
   return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {'Copyright © '}
-      <Link color="inherit" href="https://material-ui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
+      !isAuthenticated && (
+          <Button onClick={() => loginWithRedirect()}>Log In</Button>
+      )
   );
 }
+
+const LogoutButton = () => {
+  const { logout } = useAuth0();
+
+  return (
+    <button onClick={() => logout({ returnTo: window.location.origin })}>
+      Log Out
+    </button>
+  );
+};
 
 const drawerWidth = 240;
 
@@ -127,6 +136,8 @@ export default function Dashboard(props) {
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
     const [section, setSection] = React.useState('Productos');
+    const { getIdTokenClaims, isAuthenticated } = useAuth0();
+
     var main = ProductsList
 
     const handleDrawerOpen = () => {
@@ -135,6 +146,8 @@ export default function Dashboard(props) {
     const handleDrawerClose = () => {
         setOpen(false);
     };
+
+    console.log(isAuthenticated)
 
     function handleSection(sectionName) {
         setSection(sectionName)
@@ -167,10 +180,14 @@ export default function Dashboard(props) {
             <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
                 {section}
             </Typography>
+
+            <LoginButton
+             />
+
+            <LogoutButton />
+
             <IconButton color="inherit">
-                <Badge badgeContent={4} color="secondary">
-                <NotificationsIcon />
-                </Badge>
+                <PersonIcon />
             </IconButton>
             </Toolbar>
         </AppBar>

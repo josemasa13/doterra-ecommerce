@@ -12,6 +12,10 @@ import AddCircleIcon from '@material-ui/icons/AddCircle';
 import IconButton from '@material-ui/core/IconButton';
 import { createProduct } from '../utils/api'
 import { useEffect, useState } from 'react';
+import { Loader } from '../common/Loader'
+import { BrowserRouter as Router, Route, Redirect, Link, Switch, useHistory } from 'react-router-dom'
+
+
 
 
 
@@ -54,13 +58,20 @@ function Saved(props){
 export default function ProductAdditionForm(props) {
     const { register, handleSubmit, watch, errors } = useForm();
     const [ saved, setSaved ] = useState(false)
+    const [loading, setLoading] = React.useState(false)
+    const history = useHistory();
+
+
     const onSubmit = data => {
+        setLoading(true)
         createProduct(data)
         .then((data) => {
-            setSaved(true)
+            setSaved(true);
+            setLoading(false);
+            history.push('/productos')
         })
     };
-    
+
     const classes = useStyles();
   
     return (
@@ -94,6 +105,7 @@ export default function ProductAdditionForm(props) {
                                 Guardar
                             </Button>
                         </form>
+                        {loading && <Loader/>}
                         {saved && <h2>El producto se ha agregado</h2>}
                     </Paper>
                 </Grid>
