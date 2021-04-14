@@ -6,6 +6,7 @@ import ProductsList from './admin/ProductsList'
 import EventsList from './admin/EventsList'
 import Product from './admin/Product'
 import ProductAdditionForm from './admin/ProductAdditionForm'
+import EventAdditionForm from './admin/EventAdditionForm'
 import { BrowserRouter as Router, Route, Redirect, Link, Switch } from 'react-router-dom'
 import { useAuth0 } from "@auth0/auth0-react";
 
@@ -44,6 +45,10 @@ function App() {
 
         <Route exact path='/eventos'>
           <Dashboard main={<EventsList />}/>
+        </Route>
+
+        <Route exact path="/eventos/agregar">
+          <Dashboard main={<EventAdditionForm />} />
         </Route>
 
       
