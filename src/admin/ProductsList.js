@@ -13,7 +13,7 @@ import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import { useHistory } from "react-router-dom";
 import EditIcon from '@material-ui/icons/Edit';
-import { fetchProducts,deleteProduct } from '../utils/api';
+import { fetchProducts,deleteProducts } from '../utils/api';
 import { useEffect, useState } from 'react';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
@@ -79,31 +79,27 @@ export default function ProductsList() {
 
   function cargarProdutos(){
     fetchProducts()
-    .then((datos) => {
-        setProductInfo([])
-        //setProductInfo(datos)
-        //console.log("ENTRO0",datos)
+    .then((data) => {
+        setProductInfo(data.body.Items)
+        setLoading(false);
     })
   }
-
-  function deleteproducts(productid) {
-    deleteProduct(productid)
-      .then((data) => {
-        console.log(data)
-      }) 
-  }
   function borrarProductos() {
-    for (var i = 0; i<datos_eliminados.length;i++) {
-      deleteproducts(datos_eliminados[i])
+    if (datos_eliminados.length>0){
+      let arregloID = {"Products":datos_eliminados} 
+      deleteProducts(arregloID)
+        .then((data) => {
+          cargarProdutos()
+          datos_eliminados = []
+        })
     }
-    datos_eliminados = []
-    cargarProdutos()
   }
-
+  
   useEffect(() => {
     fetchProducts()
     .then((data) => {
         setProductInfo(data.body.Items)
+        console.log(data.body.Items)
         setLoading(false);
     })
 }, [])
@@ -117,7 +113,6 @@ export default function ProductsList() {
         <Table className={classes.table} size="medium" aria-label="a dense table">
         <TableHead>
         <TableRow>
-    
           <TableCell> 
               <Button variant="contained" color="primary" onClick={() => handleSection('productos/agregar')} >
               <AddCircleIcon className="fa fa-plus-circle" />
@@ -143,7 +138,7 @@ export default function ProductsList() {
           <TableBody>
             
             {data.map((product) => (
-              <TableRow key={product.id} >
+              <TableRow key={product.productId} >
                 <TableCell align="left"><Checkbox value={product.productId} onChange={handleChange} inputProps={{ 'aria-label': 'primary checkbox' }}/></TableCell>
                 <TableCell align="left"><img src="https://cdn.shopify.com/s/files/1/1355/3237/products/doTERRA-Whisper-Essential-Oil-Blend-for-Women-0_1024x1024.jpg?v=1579880250" alt="Logo" height="100" width="100" /></TableCell>
                 <TableCell align="left">{product.name}</TableCell>
