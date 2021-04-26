@@ -6,6 +6,7 @@ import ProductsList from './admin/ProductsList'
 import EventsList from './admin/EventsList'
 import Product from './admin/Product'
 import ProductAdditionForm from './admin/ProductAdditionForm'
+import ProductFeed from './shoppers/ProductFeed'
 import { BrowserRouter as Router, Route, Redirect, Link, Switch } from 'react-router-dom'
 import { useAuth0 } from "@auth0/auth0-react";
 
@@ -22,6 +23,7 @@ function Error(){
 
 function App() {
   const { getIdTokenClaims, isAuthenticated } = useAuth0();
+  console.log(isAuthenticated)
 
   return (
     <Router>
@@ -44,6 +46,10 @@ function App() {
 
         <Route exact path='/eventos'>
           <Dashboard main={<EventsList />}/>
+        </Route>
+
+        <Route exact path='/shop'>
+          <ProductFeed /> 
         </Route>
 
       
