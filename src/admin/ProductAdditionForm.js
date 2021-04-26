@@ -64,6 +64,8 @@ export default function ProductAdditionForm(props) {
 
     const onSubmit = data => {
         setLoading(true)
+        //var newdata = {"name":data.name,"desc":data.desc, "qty":data.qty, "price":data.price}
+        //console.log(newdata)
         createProduct(data)
         .then((data) => {
             setSaved(true);

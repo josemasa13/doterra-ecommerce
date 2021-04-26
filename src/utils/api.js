@@ -16,7 +16,7 @@ export function fetchProduct(productId){
 }
 
 export function createProduct(productData){
-    const endpoint = `${url}/addProduct`
+    const endpoint = `${url}/products/addProduct`
     
     const requestOptions = {
         method: 'POST',
@@ -63,12 +63,15 @@ export function fetchProducts(){
             })
 }
 
-export function deleteProduct(productId){
-    const endpoint = `${url}/deleteProduct/${productId}`
+export function deleteProducts(productIds){
+    var endpoint = `${url}/products/deleteProducts`
+
+    console.log(productIds)
     
     const requestOptions = {
         method: 'DELETE',
-        headers: { 'Content-Type': 'application/json'}
+        headers: { 'Content-Type': 'application/json'},
+        body: JSON.stringify(productIds)
     };
     
     return fetch(endpoint, requestOptions)
