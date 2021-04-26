@@ -18,8 +18,6 @@ import { useEffect, useState } from 'react';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 
-
-
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
@@ -105,7 +103,7 @@ export default function ProductsList() {
   useEffect(() => {
     fetchProducts()
     .then((data) => {
-        setProductInfo(data)
+        setProductInfo(data.body.Items)
         setLoading(false);
     })
 }, [])

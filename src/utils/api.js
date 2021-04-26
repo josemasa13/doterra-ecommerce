@@ -1,4 +1,4 @@
-const url = "https://sm0ccafg1i.execute-api.us-east-1.amazonaws.com/dev"
+const url = "https://doterra-app.herokuapp.com"
 
 export function fetchProduct(productId){
     const endpoint = `${url}/getProduct/${productId}`
@@ -50,7 +50,7 @@ export function updateProduct(productId, productData){
 }
 
 export function fetchProducts(){
-    const endpoint = `${url}/getProducts`
+    const endpoint = `${url}/products/getProducts`
     
     const requestOptions = {
         method: 'GET',

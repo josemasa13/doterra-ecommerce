@@ -1,0 +1,8 @@
+<GridList cellHeight={160} className={classes.gridList} cols={8}>
+    {products.map((tile) => (
+    <GridListTile key={tile.productId} className={classes.gridTile} cols={tile.cols || 1}>
+        <img src={img} alt={tile.title} />
+        <h1>{tile.productQty}</h1>
+    </GridListTile>
+    ))}
+</GridList>
