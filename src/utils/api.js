@@ -50,7 +50,7 @@ export function updateProduct(productId, productData){
 }
 
 export function fetchProducts(){
-    const endpoint = `${url}/getProducts`
+    const endpoint = `${url}/products/getProducts`
     
     const requestOptions = {
         method: 'GET',
