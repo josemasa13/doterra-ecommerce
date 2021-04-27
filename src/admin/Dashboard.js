@@ -23,6 +23,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import LayersIcon from '@material-ui/icons/Layers';
 import EventIcon from '@material-ui/icons/Event';
+import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import ProductsList from './ProductsList'
 import EventsList from './EventsList'
 import { useHistory } from "react-router-dom";
@@ -217,6 +218,12 @@ export default function Dashboard(props) {
                             <EventIcon />
                         </ListItemIcon>
                         <ListItemText primary="Eventos"/>
+                    </ListItem>
+                    <ListItem button onClick={() => handleSection('Pedidos')}>
+                        <ListItemIcon>
+                            <ShoppingCartIcon />
+                        </ListItemIcon>
+                        <ListItemText primary="Pedidos"/>
                     </ListItem>
                 </div>
             </List>
