@@ -3,6 +3,7 @@ import './App.css';
 import Button from '@material-ui/core/Button';
 import Dashboard from './admin/Dashboard'
 import ProductsList from './admin/ProductsList'
+import Orders from './admin/Orders'
 import EventsList from './admin/EventsList'
 import Product from './admin/Product'
 import ProductAdditionForm from './admin/ProductAdditionForm'
@@ -52,6 +53,12 @@ function App() {
         <Route exact path="/eventos/agregar">
           <Dashboard main={<EventAdditionForm />} />
         </Route>
+
+        <Route exact path='/pedidos'>
+          <Dashboard main={<Orders />}/>
+        </Route>
+
+        
 
         <Route exact path='/shop'>
           <ProductFeed /> 
