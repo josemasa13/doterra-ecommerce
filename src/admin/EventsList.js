@@ -73,7 +73,6 @@ export default function EventsList(props) {
           console.log("Agregado "+event.target.value)
         }
 
-        
       };
 
       function cargarEventos(){
@@ -146,7 +145,7 @@ export default function EventsList(props) {
                 <TableCell align="left">{event.numParticipants}</TableCell>
                 <TableCell align="left">{event.eventDescription}</TableCell>
                 <TableCell> 
-                <Button variant="contained" color="primary"  onClick={() => handleSectionEdit(event.id)} >
+                <Button variant="contained" color="primary"  onClick={() => handleSectionEdit(event.eventId)} >
                 <EditIcon className={classes.icon} />
                 </Button>
                 </TableCell>

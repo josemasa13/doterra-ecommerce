@@ -123,3 +123,38 @@ export function deleteEvents(eventIds){
                 return res.json();
             })
 }
+
+export function fetchEvent(eventId){
+    const endpoint = `${url}/events/getEvent/${eventId}`
+    
+    const requestOptions = {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json'}
+    };
+
+    return fetch(endpoint, requestOptions)
+            .then((res) => {
+                return res.json();
+            })
+    
+}
+
+export function updateEvent(eventId,eventData){
+    const endpoint = `${url}/events/updateEvent`
+    
+    const requestOptions = {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json'},
+        body: JSON.stringify(
+            {
+                eventId,
+                ...eventData
+            })
+    };
+
+    return fetch(endpoint, requestOptions)
+            .then((res) => {
+                return res.json();
+            })
+    
+}
