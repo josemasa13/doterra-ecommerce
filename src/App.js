@@ -4,6 +4,7 @@ import Button from '@material-ui/core/Button';
 import Dashboard from './admin/Dashboard'
 import ProductsList from './admin/ProductsList'
 import Orders from './admin/Orders'
+import Event from './admin/Event'
 import EventsList from './admin/EventsList'
 import Product from './admin/Product'
 import ProductAdditionForm from './admin/ProductAdditionForm'
@@ -46,13 +47,19 @@ function App() {
           <Dashboard main={<Product/>} />
         </Route>
 
+        <Route exact path="/eventos/agregar">
+          <Dashboard main={<EventAdditionForm />} />
+        </Route>
+
+        <Route path="/eventos/:eventIdparam">
+          <Dashboard main={<Event/>} />
+        </Route>
+
         <Route exact path='/eventos'>
           <Dashboard main={<EventsList />}/>
         </Route>
 
-        <Route exact path="/eventos/agregar">
-          <Dashboard main={<EventAdditionForm />} />
-        </Route>
+        
 
         <Route exact path='/pedidos'>
           <Dashboard main={<Orders />}/>
