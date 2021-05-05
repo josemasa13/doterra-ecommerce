@@ -37,6 +37,7 @@ function LoginButton() {
       !isAuthenticated && (
           <Button onClick={() => loginWithRedirect()}>Log In</Button>
       )
+      
   );
 }
 

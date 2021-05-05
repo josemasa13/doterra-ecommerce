@@ -1,7 +1,7 @@
 const url = "https://doterra-app.herokuapp.com"
 
 export function fetchProduct(productId){
-    const endpoint = `${url}/getProduct/${productId}`
+    const endpoint = `${url}/products/getProduct/${productId}`
     
     const requestOptions = {
         method: 'GET',
@@ -31,10 +31,10 @@ export function createProduct(productData){
 }
 
 export function updateProduct(productId, productData){
-    const endpoint = `${url}/updateProduct`
+    const endpoint = `${url}/products/updateProduct/`
     
     const requestOptions = {
-        method: 'PATCH',
+        method: 'PUT',
         headers: { 'Content-Type': 'application/json'},
         body: JSON.stringify(
             {

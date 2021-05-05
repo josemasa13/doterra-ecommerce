@@ -99,10 +99,11 @@ export default function ProductAdditionForm(props) {
                 <Grid height="100%" item xs={12} sm={4}>
                     <Paper className={classes.paper}>
                         <form onSubmit={handleSubmit(onSubmit)} className={classes.margin}>
-                            <TextField name="name" fullWidth required id="standard-required" label="Nombre de producto" inputRef={register({ required: true })} />
-                            <TextField name="desc"fullWidth required multiline id="standard-multiline" label="Descripción del producto" rows={8} inputRef={register({ required: true })}  />
-                            <TextField name="price" fullWidth required id="standard-required" label="Precio $" inputRef={register({ required: true })}/>
-                            <TextField name="qty" fullWidth required id="standard-required" label="Cantidad" inputRef={register({ required: true })}/>
+                            <TextField name="productName" fullWidth required id="standard-required" label="Nombre de producto" inputRef={register({ required: true })} />
+                            <TextField name="productDesc"fullWidth required multiline id="standard-multiline" label="Descripción del producto" rows={8} inputRef={register({ required: true })}  />
+                            <TextField name="productPrice" fullWidth required id="standard-required" label="Precio $" inputRef={register({ required: true })}/>
+                            <TextField name="productQty" fullWidth required id="standard-required" label="Presentación ML" inputRef={register({ required: true })}/>
+                            <TextField name="productSupply" fullWidth required id="standard-required" label="Cantidad en inventario" inputRef={register({ required: true })}/>
                             <Button type="submit" variant="contained" size="large" color="primary" className={classes.margin}>
                                 Guardar
                             </Button>

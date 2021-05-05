@@ -11,9 +11,9 @@ import config from './auth_config.json';
 ReactDOM.render(
   <React.StrictMode>
     <Auth0Provider
-                domain={config.domain}
-                clientId={config.clientId}
-                redirectUri={window.location.origin}>      
+        domain={config.domain}
+        clientId={config.clientId}
+        redirectUri={window.location.origin}>      
       <App />
     </Auth0Provider>
   </React.StrictMode>,

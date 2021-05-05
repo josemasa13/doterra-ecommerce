@@ -14,15 +14,15 @@ import { createProduct } from '../utils/api'
 import { useEffect, useState } from 'react';
 import { Loader } from '../common/Loader'
 import Header from './Header'
-import ProductsTable from './ProductsTable'
+import ProductDetails from './ProductDetails'
 import { BrowserRouter as Router, Route, Redirect, Link, Switch, useHistory } from 'react-router-dom'
 
 
-export default function ProductFeed(props) {
+export default function ProductDetailsScreen(props) {
    return (
     <div>
         <Header />
-        <ProductsTable />
+        <ProductDetails />
     </div>
    );
 }

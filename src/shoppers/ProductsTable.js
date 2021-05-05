@@ -9,8 +9,11 @@ import Paper from '@material-ui/core/Paper';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import IconButton from '@material-ui/core/IconButton';
 import { FormControl, Typography } from '@material-ui/core';
-
-
+import Link from '@material-ui/core/Link';
+import { Button } from '@material-ui/core';
+import { useHistory } from "react-router-dom";
+import { Link as RouterLink } from 'react-router-dom';
+import { Loader } from '../common/Loader'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -20,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'space-around',
     overflow: 'hidden',
     backgroundColor: theme.palette.background.paper,
-    padding: '8em'
+    padding: '4em'
   },
   gridList: {
     width: 950,
@@ -42,12 +45,16 @@ const img = 'https://www.doterra.com/medias/625x325-15ml-60200190-breathe-us-eng
 export default function ImageGridList() {
     const classes = useStyles();
     const [products, setProducts] = useState([]);
+    const history = useHistory();
+    const [loading, setLoading] = React.useState(true)
+
+
 
     useEffect(() => {
         fetchProducts()
         .then((data) => {
             setProducts(data.body.Items)
-            console.log(products)
+            setLoading(false)
         })
     }, [])
 
@@ -55,25 +62,33 @@ export default function ImageGridList() {
 
     return (
       <div className={classes.root}>
-            <h1>Catálogo de productos</h1>
-            <Grid container spacing={1}>
-            
-            
-              {products.map((product) => (
-                <Grid item xs={12} sm={4}>
-                  <Paper elevation={4} className={classes.paper} textAlign="center">
-                      <img src={img} alt={product.productName} />
-                      <Typography>{product.productName}</Typography>
-                      <Typography>${product.productPrice} MXN</Typography>
-                      <Typography>{product.productSupply} piezas en inventario</Typography>
-                      <Typography>Presentación: {product.productQty} Ml</Typography>
-                         
-                      
-                  </Paper>
+            {loading &&
+                <Grid container spacing={2}>
+                    <Grid item xs={12}>
+                        <Grid container justify="center" alignItems="center">
+                            <Loader />
+                        </Grid>
+                    </Grid>
                 </Grid>
-              ))}
-
-            </Grid>
+            }
+            {!loading && <div>
+              <h1>Catálogo de productos</h1>
+              <Grid container spacing={1}>
+                {products.map((product) => (
+                  <Grid item xs={12} sm={4}>
+                    <Link component={RouterLink} to={`/shop/${product.productId}`}>
+                      <Paper elevation={4} className={classes.paper} textAlign="center">
+                          <img src={img} alt={product.productName} />
+                          <Typography>{product.productName}</Typography>
+                          <Typography>${product.productPrice} MXN</Typography>
+                          <Typography>{product.productSupply} piezas en inventario</Typography>
+                          <Typography>Presentación: {product.productQty} Ml</Typography>
+                      </Paper>
+                    </Link>
+                  </Grid>
+                ))}
+              </Grid>
+            </div>}
                 
                 
       </div>

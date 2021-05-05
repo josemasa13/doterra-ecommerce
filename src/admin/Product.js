@@ -60,6 +60,7 @@ export default function Product(props) {
     const [productDescription, setProductDescription] = useState("")
     const [productPrice, setProductPrice] = useState("")
     const [productQty, setProductQty] = useState("")
+    const [productSupply, setProductSupply] = useState("")
     const { productId } = useParams()
     const [ saved, setSaved ] = useState(false)
     const [loading, setLoading] = React.useState(true)
@@ -69,17 +70,19 @@ export default function Product(props) {
         updateProduct(productId, data)
         .then((data) => {
             setSaved(true)
+            console.log(data)
         })
     };
 
     useEffect(() => {
         fetchProduct(productId)
         .then((data) => {
-            setProductInfo(data)
-            setProductName(data.name)
-            setProductDescription(data.desc)
-            setProductPrice(data.price)
-            setProductQty(data.qty)
+            setProductInfo(data.body)
+            setProductName(data.body.productName)
+            setProductDescription(data.body.productDesc)
+            setProductPrice(data.body.productPrice)
+            setProductQty(data.body.productQty)
+            setProductSupply(data.body.productSupply)
             setLoading(false)
         })
     }, [])
@@ -88,7 +91,15 @@ export default function Product(props) {
     return (
         <div className={classes.root}>
             <Typography className={classes.margin} align="center" variant="h5">Editar producto</Typography>
-            {loading &&  <Loader />}
+            {loading &&
+                <Grid container spacing={2}>
+                    <Grid item xs={12}>
+                        <Grid container justify="center" alignItems="center">
+                            <Loader />
+                        </Grid>
+                    </Grid>
+                </Grid>
+            }
             {!loading && <Grid container spacing={1}>
                 <Grid item xs={12} sm={8}>
                     <Paper className={classes.paper}>
@@ -108,22 +119,26 @@ export default function Product(props) {
 
                 
                 <Grid height="100%" item xs={12} sm={4}>
-                    
-
                     <Paper className={classes.paper}>
                         <form onSubmit={handleSubmit(onSubmit)} className={classes.margin}>
-                            <TextField name="name" fullWidth required id="standard-required" label="Nombre de producto" inputRef={register({ required: true })} InputLabelProps={{ shrink: true }} value = {productName} onChange={e => {
+                            <TextField name="productName" fullWidth required id="standard-required" label="Nombre de producto" inputRef={register({ required: true })} InputLabelProps={{ shrink: true }} value = {productName} onChange={e => {
                                 setProductName(e.target.value)
                             }}/>
-                            <TextField name="desc"fullWidth required multiline id="standard-multiline" label="Descripción del producto" rows={8} inputRef={register({ required: true })}  InputLabelProps={{ shrink: true }} value = {productDescription} onChange={e => {
+                            <TextField name="productDesc"fullWidth required multiline id="standard-multiline" label="Descripción del producto" rows={8} inputRef={register({ required: true })}  InputLabelProps={{ shrink: true }} value = {productDescription} onChange={e => {
                                 setProductDescription(e.target.value)
                             }}/>
-                            <TextField name="price" fullWidth required id="standard-required" label="Precio $" inputRef={register({ required: true })} InputLabelProps={{ shrink: true }} value = {productPrice} onChange={e => {
+                            <TextField name="productPrice" fullWidth required id="standard-required" label="Precio $" inputRef={register({ required: true })} InputLabelProps={{ shrink: true }} value = {productPrice} onChange={e => {
                                 setProductPrice(e.target.value)
                             }}/>
-                            <TextField name="qty" fullWidth required id="standard-required" label="Cantidad" inputRef={register({ required: true })} InputLabelProps={{ shrink: true }} value = {productQty} onChange={e => {
+                            
+                            <TextField name="productQty" fullWidth required id="standard-required" label="Presentación ML" inputRef={register({ required: true })} InputLabelProps={{ shrink: true }} value = {productQty} onChange={e => {
                                 setProductQty(e.target.value)
                             }}/>
+
+                            <TextField name="productSupply" fullWidth required id="standard-required" label="Cantidad en inventario" inputRef={register({ required: true })} InputLabelProps={{ shrink: true }} value = {productSupply} onChange={e => {
+                                setProductSupply(e.target.value)
+                            }}/>
+
                             <Button type="submit" variant="contained" size="large" color="primary" className={classes.margin}>
                                 Guardar
                             </Button>

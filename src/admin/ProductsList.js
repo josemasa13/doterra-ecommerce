@@ -141,10 +141,10 @@ export default function ProductsList() {
               <TableRow key={product.productId} >
                 <TableCell align="left"><Checkbox value={product.productId} onChange={handleChange} inputProps={{ 'aria-label': 'primary checkbox' }}/></TableCell>
                 <TableCell align="left"><img src="https://cdn.shopify.com/s/files/1/1355/3237/products/doTERRA-Whisper-Essential-Oil-Blend-for-Women-0_1024x1024.jpg?v=1579880250" alt="Logo" height="100" width="100" /></TableCell>
-                <TableCell align="left">{product.name}</TableCell>
-                <TableCell align="left">{product.desc}</TableCell>
-                <TableCell align="left">{product.qty}</TableCell>
-                <TableCell align="left">{product.price}</TableCell>
+                <TableCell align="left">{product.productName}</TableCell>
+                <TableCell align="left">{product.productDesc}</TableCell>
+                <TableCell align="left">{product.productSupply}</TableCell>
+                <TableCell align="left">{product.productPrice}</TableCell>
                 <TableCell> 
               <Button variant="contained" color="primary"  onClick={() => handleSectionEdit(product.productId)} >
               <EditIcon className={classes.icon} />
