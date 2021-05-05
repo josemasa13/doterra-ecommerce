@@ -1,3 +1,4 @@
+import React from 'react';
 import { Button } from '@material-ui/core';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -12,6 +13,9 @@ import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import { makeStyles } from '@material-ui/core/styles';
 import Checkbox from '@material-ui/core/Checkbox';
 import EditIcon from '@material-ui/icons/Edit';
+import { fetchEvents,deleteEvents } from '../utils/api';
+import { useEffect, useState } from 'react';
+
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -41,21 +45,64 @@ const useStyles = makeStyles((theme) => ({
   
 
 export default function EventsList(props) {
+
+    let datos_eliminados = []
+    const [data, setEventInfo] = React.useState([]);
     const history = useHistory();
+
     const classes = useStyles();
     function handleSection(sectionName) {
         history.push(`/${sectionName}`)
-      }
+    }
 
 
       const handleChange = (event) => {
+        let index = -1;
+        for (var i = 0; i<datos_eliminados.length;i++) {
+          if (datos_eliminados[i] == event.target.value){
+            index = i
+          }
+        }
+        if(index != -1){
+          datos_eliminados.splice(index,1)
+          console.log("Eliminado "+event.target.value)
+          console.log(datos_eliminados)
+        }
+        else{
+          datos_eliminados.push(event.target.value)
+          console.log("Agregado "+event.target.value)
+        }
 
-        
       };
+
+      function cargarEventos(){
+        fetchEvents()
+        .then((data) => {
+            setEventInfo(data)
+        })
+      }
+
+      function borrarEventos() {
+        if (datos_eliminados.length>0){
+          let arregloID = {"Events":datos_eliminados} 
+          deleteEvents(arregloID)
+            .then((data) => {
+                cargarEventos()
+              datos_eliminados = []
+            })
+        }
+      }
 
       function handleSectionEdit(productid) {
         history.push(`/eventos/${productid}`)
       }
+
+      useEffect(() => {
+        fetchEvents()
+        .then((data) => {
+            setEventInfo(data)
+        })
+    }, [])
       
     return (
         <div className={classes.root}>
@@ -69,7 +116,7 @@ export default function EventsList(props) {
               </Button>
           </TableCell>
           <TableCell> 
-          <Button variant="contained" color="primary"   >
+          <Button variant="contained" color="primary" onClick={borrarEventos}  >
               <DeleteForeverIcon /> Borrar Evento
               </Button>
           </TableCell>
@@ -80,21 +127,25 @@ export default function EventsList(props) {
             <TableRow>
             <TableCell align="left">Seleccionar</TableCell>
             <TableCell align="left">Id del zoom</TableCell>
-              <TableCell align="left">Descripcion</TableCell>
-              <TableCell align="left">Hora</TableCell>
+            <TableCell align="left">Nombre</TableCell>
+            <TableCell align="left">Descripcion</TableCell>
+            <TableCell align="left">Numero_Participantes</TableCell>
+            <TableCell align="left">Descripcion</TableCell>
             </TableRow>
 
             <TableBody>
             
             {data.map((event) => (
-              <TableRow key={event.id} >
-                <TableCell align="left"><Checkbox value={event.id} onChange={handleChange} inputProps={{ 'aria-label': 'primary checkbox' }}/></TableCell>
+              <TableRow key={event.eventId} >
+                <TableCell align="left"><Checkbox value={event.eventId} onChange={handleChange} inputProps={{ 'aria-label': 'primary checkbox' }}/></TableCell>
 
-                <TableCell align="left">{event.id}</TableCell>
-                <TableCell align="left">{event.desc}</TableCell>
-                <TableCell align="left">{event.hora}</TableCell>
+                <TableCell align="left">{event.eventId}</TableCell>
+                <TableCell align="left">{event.eventName}</TableCell>
+                <TableCell align="left">{event.link}</TableCell>
+                <TableCell align="left">{event.numParticipants}</TableCell>
+                <TableCell align="left">{event.eventDescription}</TableCell>
                 <TableCell> 
-                <Button variant="contained" color="primary"  onClick={() => handleSectionEdit(event.id)} >
+                <Button variant="contained" color="primary"  onClick={() => handleSectionEdit(event.eventId)} >
                 <EditIcon className={classes.icon} />
                 </Button>
                 </TableCell>

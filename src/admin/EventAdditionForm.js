@@ -9,6 +9,7 @@ import Button from '@material-ui/core/Button';
 import { useEffect, useState } from 'react';
 import { Loader } from '../common/Loader'
 import { BrowserRouter as Router, Route, Redirect, Link, Switch, useHistory } from 'react-router-dom'
+import { createEvent } from '../utils/api'
 
 
 
@@ -50,13 +51,12 @@ export default function EventAdditionForm(props) {
 
     const onSubmit = data => {
         setLoading(true)
-        /*createProduct(data)
+        createEvent(data)
         .then((data) => {
             setSaved(true);
             setLoading(false);
-            
-        })*/
-        history.push('/eventos')
+            history.push('/eventos')  
+        })
     };
 
     const classes = useStyles();
@@ -67,9 +67,11 @@ export default function EventAdditionForm(props) {
                 <Grid >
                     <Paper className={classes.paper}>
                         <form onSubmit={handleSubmit(onSubmit)} className={classes.margin}>
-                            <TextField name="code" fullWidth required id="standard-required" label="Id del Zoom" inputRef={register({ required: true })} />
-                            <TextField name="desc"fullWidth required multiline id="standard-multiline" label="Descripción del evento" rows={8} inputRef={register({ required: true })}  />
-                            <TextField name="hora" fullWidth required id="standard-required" label="Hora" inputRef={register({ required: true })}/>
+                            <TextField name="eventId" fullWidth required id="standard-required" label="Id del Zoom" inputRef={register({ required: true })} />
+                            <TextField name="eventName" fullWidth required multiline id="standard-multiline" label="Nombre del Evento"  inputRef={register({ required: true })}  />
+                            <TextField name="link" fullWidth required multiline id="standard-multiline" label="Link"  inputRef={register({ required: true })}  />
+                            <TextField name="numParticipants" fullWidth required id="standard-required" label="Numero de Participantes" inputRef={register({ required: true })}/>
+                            <TextField name="eventDescription" fullWidth required multiline id="standard-multiline" label="Descripcion" rows={8} inputRef={register({ required: true })}/>
                             <Button type="submit" variant="contained" size="large" color="primary" className={classes.margin}>
                                 Guardar Evento
                             </Button>
