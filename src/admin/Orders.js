@@ -13,7 +13,7 @@ import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import { useHistory } from "react-router-dom";
 import EditIcon from '@material-ui/icons/Edit';
-import { fetchProducts,deleteProducts } from '../utils/api';
+import { fetchProducts,deleteProducts,fetchPedidos } from '../utils/api';
 import { useEffect, useState } from 'react';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import VisibilityIcon from '@material-ui/icons/Visibility';
@@ -50,7 +50,7 @@ export default function ProductsList() {
   const classes = useStyles();
   const history = useHistory();
   const [checked, setChecked] = React.useState([]);
-  const [data, setProductInfo] = React.useState([]);
+  const [data, setOrdersInfo] = React.useState([]);
   const [loading, setLoading] = React.useState(true)
   let datos_eliminados = []
 
@@ -80,10 +80,21 @@ export default function ProductsList() {
     history.push(`/productos/${productid}`)
   }
 
+  function cargarPedidos(){
+    fetchPedidos()
+    .then((data) => {
+        console.log("Pedidos Inicio")
+        console.log(data)
+        console.log("Pedidos Final")
+        setOrdersInfo(data)
+        setLoading(false);
+    })
+  }
+
   function cargarProdutos(){
     fetchProducts()
     .then((data) => {
-        setProductInfo(data.body.Items)
+        //setProductInfo(data.body.Items)
         setLoading(false);
     })
   }
@@ -102,10 +113,12 @@ export default function ProductsList() {
   }
   
   useEffect(() => {
-    fetchProducts()
+    fetchPedidos()
     .then((data) => {
-        setProductInfo(data.body.Items)
-        console.log(data.body.Items)
+        console.log("Pedidos Inicio")
+        console.log(data)
+        console.log("Pedidos Final")
+        setOrdersInfo(data)
         setLoading(false);
     })
 }, [])
@@ -135,27 +148,22 @@ let datos = [
             </TableHead>  
             <TableRow>
             <TableCell align="left">Seleccionar</TableCell>
-              <TableCell align="center">Numero_de_pedido</TableCell>
-              <TableCell align="left">Lista de Productos</TableCell>
-              <TableCell align="left">Fecha de Pedido</TableCell>
-              <TableCell align="left">Contacto</TableCell>
+              <TableCell align="center">idProducto</TableCell>
+              <TableCell align="left">Nombre de Producto</TableCell>
+              <TableCell align="left">Cantidad</TableCell>
+              <TableCell align="left">email</TableCell>
+              <TableCell align="left">Nombre del cliente</TableCell>
               <TableCell align="left">Ver detalles</TableCell>
             </TableRow>
           <TableBody>
-            
-            {datos.map((orders) => (
+            {data.map((orders) => (
               <TableRow key={orders.id} >
                 <TableCell align="left"><Checkbox value={orders.id} onChange={handleChange} inputProps={{ 'aria-label': 'primary checkbox' }}/></TableCell>
-                <TableCell align="center">{orders.num}</TableCell>
-                <TableCell align="left">{orders.pedidos.map( (pedido) =>( 
-                     
-                     <ListItemText
-                       primary={"Cantidad: " + pedido.cantidad + " - " + pedido.nombre}
-                     />
-                   
-                ) )}</TableCell>
-                <TableCell align="left">{orders.fecha}</TableCell>
-                <TableCell align="left">{orders.contacto}</TableCell>
+                <TableCell align="center">{orders.idproducto}</TableCell>
+                <TableCell align="center">{orders.nombreproducto}</TableCell>
+                <TableCell align="center">{orders.cantidad}</TableCell>
+                <TableCell align="center">{orders.email}</TableCell>
+                <TableCell align="center">{orders.nombre}</TableCell>
                 <TableCell> 
               <Button variant="contained" color="primary"  onClick={() => handleSectionEdit(orders.productId)} >
               <VisibilityIcon className={classes.icon} />

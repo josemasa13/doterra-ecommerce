@@ -158,3 +158,18 @@ export function updateEvent(eventId,eventData){
             })
     
 }
+
+
+export function fetchPedidos(){
+    const endpoint = `${url}/pedidos/getPedidos`
+    
+    const requestOptions = {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json'}
+    };
+    
+    return fetch(endpoint, requestOptions)
+            .then((res) => {
+                return res.json();
+            })
+}
