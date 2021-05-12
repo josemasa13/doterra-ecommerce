@@ -159,6 +159,7 @@ export function updateEvent(eventId,eventData){
     
 }
 
+
 export function createPedido(orderData){
     const endpoint = `${url}/pedidos/addPedido`
     
@@ -166,6 +167,20 @@ export function createPedido(orderData){
         method: 'POST',
         headers: { 'Content-Type': 'application/json'},
         body: JSON.stringify(orderData)
+    };
+
+    return fetch(endpoint, requestOptions)
+    .then((res) => {
+        return res.json();
+    })
+
+
+export function fetchPedidos(){
+    const endpoint = `${url}/pedidos/getPedidos`
+    
+    const requestOptions = {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json'}
     };
     
     return fetch(endpoint, requestOptions)
