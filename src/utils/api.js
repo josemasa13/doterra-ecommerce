@@ -158,3 +158,18 @@ export function updateEvent(eventId,eventData){
             })
     
 }
+
+export function createPedido(orderData){
+    const endpoint = `${url}/pedidos/addPedido`
+    
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json'},
+        body: JSON.stringify(orderData)
+    };
+    
+    return fetch(endpoint, requestOptions)
+            .then((res) => {
+                return res.json();
+            })
+}
