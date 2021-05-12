@@ -173,6 +173,7 @@ export function createPedido(orderData){
     .then((res) => {
         return res.json();
     })
+}
 
 
 export function fetchPedidos(){
