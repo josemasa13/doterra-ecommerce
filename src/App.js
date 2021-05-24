@@ -3,6 +3,7 @@ import './App.css';
 import Button from '@material-ui/core/Button';
 import Dashboard from './admin/Dashboard'
 import ProductsList from './admin/ProductsList'
+import Pedido from './admin/Pedido'
 import Orders from './admin/Orders'
 import Event from './admin/Event'
 import EventsList from './admin/EventsList'
@@ -61,7 +62,10 @@ function App() {
         </Route>
 
         
-
+        <Route exact path='/pedido/:pedidoId'>
+          <Dashboard main={<Pedido />}/>
+        </Route>
+        
         <Route exact path='/pedidos'>
           <Dashboard main={<Orders />}/>
         </Route>

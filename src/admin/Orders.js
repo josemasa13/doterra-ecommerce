@@ -77,7 +77,7 @@ export default function ProductsList() {
     history.push(`/${sectionName}`)
   }
   function handleSectionEdit(productid) {
-    history.push(`/productos/${productid}`)
+    history.push(`/pedido/${productid}`)
   }
 
   function cargarPedidos(){
@@ -165,7 +165,7 @@ let datos = [
                 <TableCell align="center">{orders.email}</TableCell>
                 <TableCell align="center">{orders.nombre}</TableCell>
                 <TableCell> 
-              <Button variant="contained" color="primary"  onClick={() => handleSectionEdit(orders.productId)} >
+              <Button variant="contained" color="primary"  onClick={() => handleSectionEdit(orders.pedidoId)} >
               <VisibilityIcon className={classes.icon} />
               </Button>
           </TableCell>

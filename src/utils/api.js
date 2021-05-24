@@ -188,3 +188,17 @@ export function fetchPedidos(){
                 return res.json();
             })
 }
+
+export function fetchPedido(pedidoId){
+    const endpoint = `${url}/pedidos/getPedido/${pedidoId}`
+    
+    const requestOptions = {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json'}
+    };
+    
+    return fetch(endpoint, requestOptions)
+            .then((res) => {
+                return res.json();
+            })
+}
