@@ -11,7 +11,7 @@ import { Container } from '@material-ui/core';
 import { fetchProduct } from '../utils/api'
 import { useHistory, useRouteMatch, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { updateProduct } from '../utils/api'
+import { createPedido } from '../utils/api'
 import { Loader } from '../common/Loader'
 
 const productData = {
@@ -69,6 +69,7 @@ export default function ProductDetails(props) {
     const [clientName, setClientName] = useState("")
     const [clientEmail, setClientEmail] = useState("")
     const [clientQuantity, setClientQuantity] = useState("")
+    const [clientObservations, setClientObservations] = useState("")
 
     const { productId } = useParams()
     const [loading, setLoading] = React.useState(true)
@@ -87,7 +88,9 @@ export default function ProductDetails(props) {
     }, [])
 
     const onSubmit = data => {
-        updateProduct(productId, data)
+        data.idproducto = productId
+        data.nombreproducto = productName
+        createPedido(data)
         .then((data) => {
             console.log(data)
         })
@@ -146,16 +149,10 @@ export default function ProductDetails(props) {
                         <Paper className={classes.paper}>
                             <Typography variant='h6'>¿Te interesa este producto? Compártenos tu información y nos pondremos en contacto contigo</Typography>
                             <form onSubmit={handleSubmit(onSubmit)} className={classes.margin}>
-                                <TextField name="clientName" fullWidth required id="standard-required" label="Tu nombre" inputRef={register({ required: true })} InputLabelProps={{ shrink: true }} value = {clientName} onChange={e => {
-                                    setClientName(e.target.value)
-                                }}/>
-                                <TextField name="clientEmail"fullWidth required multiline id="standard-multiline" label="Tu correo electrónico" rows={8} inputRef={register({ required: true })}  InputLabelProps={{ shrink: true }} value = {clientEmail} onChange={e => {
-                                    setClientEmail(e.target.value)
-                                }}/>
-                                <TextField name="clientQuantity" fullWidth required id="standard-required" label="Cantidad requerida" inputRef={register({ required: true })} InputLabelProps={{ shrink: true }} value = {clientQuantity} onChange={e => {
-                                    setClientQuantity(e.target.value)
-                                }}/>
-
+                                <TextField name="nombre" fullWidth required id="standard-required" label="Tu nombre" inputRef={register({ required: true })} InputLabelProps={{ shrink: true }} />
+                                <TextField name="email"fullWidth required multiline id="standard-multiline" label="Tu correo electrónico" inputRef={register({ required: true })}  InputLabelProps={{ shrink: true }} />
+                                <TextField name="cantidad" fullWidth required id="standard-required" label="Cantidad requerida" inputRef={register({ required: true })} InputLabelProps={{ shrink: true }} />
+                                <TextField name="observaciones" fullWidth required multiline id="standard-multiline" label="Observaciones" rows={8} inputRef={register({ required: true })}  />
                                 <Button type="submit" variant="contained" size="large" color="primary" className={classes.margin}>
                                     Enviar
                                 </Button>

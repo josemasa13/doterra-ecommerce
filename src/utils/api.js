@@ -178,7 +178,6 @@ export function createPedido(orderData){
 
 export function fetchPedidos(){
     const endpoint = `${url}/pedidos/getPedidos`
-    
     const requestOptions = {
         method: 'GET',
         headers: { 'Content-Type': 'application/json'}
