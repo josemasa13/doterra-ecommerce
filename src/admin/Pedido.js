@@ -43,6 +43,8 @@ export default function Pedido(props) {
     const { pedidoId } = useParams()
     const history = useHistory();
     const [dataPedido, setInfo] = React.useState({});
+    
+    
 
     function handleSection() {
         history.push(`/Pedidos`)
@@ -66,10 +68,6 @@ export default function Pedido(props) {
     useEffect(() => {
         fetchPedido(pedidoId)
         .then((data) => {
-
-            //AQUI BORRAS EL ESTATUS
-            data.estatus = true
-            //AQUI BORRAS EL ESTATUS
             console.log(data);
             setInfo(data)
             setLoading(false)

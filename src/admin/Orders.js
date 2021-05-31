@@ -16,9 +16,6 @@ import { useEffect, useState } from 'react';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import Switch from '@material-ui/core/Switch';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-
-
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -50,7 +47,13 @@ export default function ProductsList() {
   const history = useHistory();
   var [data, setOrdersInfo] = React.useState([]);
   var [loading, setLoading] = React.useState(true)
+  const [filtro, setfiltro] = React.useState({
+    estatus:"Activo",
+    activo: true
+  });
   let datos_eliminados = []
+
+  
 
   function handleSection(sectionName) {
     history.push(`/${sectionName}`)
@@ -59,14 +62,16 @@ export default function ProductsList() {
     history.push(`/pedido/${productid}`)
   }
 
-  function cargarPedidos(){
+  function cargarPedidos(estatus_pedidos){
+    var datos_aceptados = []
     fetchPedidos()
-    .then((data) => {
-        console.log("Pedidos Inicio")
-        console.log(data)
-        console.log("Pedidos Final")
-        setOrdersInfo(data)
-        setLoading(false);
+    .then((datos) => {
+      for (let value of datos) {
+        if (value["estatus"] == estatus_pedidos){
+          datos_aceptados.push(value)
+        }
+      }
+      setOrdersInfo(datos_aceptados)
     })
   }
 
@@ -77,32 +82,35 @@ export default function ProductsList() {
         setLoading(false);
     })
   }
-  function borrarProductos() {
-    
-    if (datos_eliminados.length>0){
-    
-      let arregloID = {"Products":datos_eliminados} 
-      deleteProducts(arregloID)
-        .then((data) => {
-          cargarProdutos()
-          datos_eliminados = []
-        })
-        
+
+
+  const handleChange = (event) => {
+
+    if (filtro.activo == true){
+      cargarPedidos(false)
+      setfiltro({ ...filtro, ["activo"]: false,["estatus"]: "Inactivos" });
     }
-  }
+    else{
+      cargarPedidos(true)
+      setfiltro({ ...filtro, ["activo"]: true,["estatus"]: "Activos" });
+    }
+    
+    
+  };
   
   useEffect(() => {
+    var datos_aceptados = []
     fetchPedidos()
     .then((datos) => {
         console.log("Pedidos Inicio")
-        /*var x ;
-        for (x in data) {
-          
-        }*/
-        datos.forEach(element => element["estatus"] = true);
+        for (let value of datos) {
+          if (value["estatus"] == true){
+            datos_aceptados.push(value)
+          }
+        }
         console.log("Pedidos Final")
         console.log(datos)
-        setOrdersInfo(datos)
+        setOrdersInfo(datos_aceptados)
         setLoading(false);
     })
 }, [])
@@ -118,11 +126,8 @@ export default function ProductsList() {
         <TableHead>
         <TableRow>
           <TableCell> 
-              <Button variant="contained" color="primary"  onClick={borrarProductos} >
-              <DeleteForeverIcon className={classes.icon} />
-              </Button>
+              Pedidos {filtro.estatus} <Switch checked={filtro.activo} onChange={handleChange} color="primary" />
           </TableCell>
-          
         </TableRow>
             </TableHead>  
             <TableRow>
