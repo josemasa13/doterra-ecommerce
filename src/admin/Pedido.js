@@ -6,6 +6,8 @@ import Button from '@material-ui/core/Button';
 import { fetchEvent,updateEvent,fetchPedido } from '../utils/api'
 import { useHistory, useRouteMatch, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import Switch from '@material-ui/core/Switch';
+import { updatePedido } from '../utils/api'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -40,17 +42,35 @@ export default function Pedido(props) {
     const [loading, setLoading] = React.useState(true)
     const { pedidoId } = useParams()
     const history = useHistory();
-    const [dataPedido, setInfo] = React.useState();
+    const [dataPedido, setInfo] = React.useState({});
 
     function handleSection() {
         history.push(`/Pedidos`)
       }
-
+    
+    const handleChange = (event) => {
+        if(dataPedido["estatus"] == true){
+          dataPedido["estatus"] = false
+        }
+        else{
+          dataPedido["estatus"] = true
+        }
+        updatePedido(dataPedido.pedidoId,dataPedido)
+        .then((data) => {
+          setInfo({ ...dataPedido, ["estatus"]: dataPedido["estatus"]  });
+        })
+        
+      };
     
 
     useEffect(() => {
         fetchPedido(pedidoId)
         .then((data) => {
+
+            //AQUI BORRAS EL ESTATUS
+            data.estatus = true
+            //AQUI BORRAS EL ESTATUS
+            console.log(data);
             setInfo(data)
             setLoading(false)
         })
@@ -87,11 +107,16 @@ export default function Pedido(props) {
                         <Typography className={classes.title} color="textPrimary" >
                             email del cliente: {dataPedido.email}
                         </Typography>
-                            
-                            
-                            <Button type="submit" variant="contained" size="large" color="primary" className={classes.margin} onClick={() => handleSection()}>
+                        <Typography className={classes.title} color="textPrimary" >
+                            Activo/Inactivo
+                            <Switch
+                            checked={dataPedido.estatus}
+                            onChange={handleChange}
+                            color="primary" />
+                        </Typography>
+                        <Button type="submit" variant="contained" size="large" color="primary" className={classes.margin} onClick={() => handleSection()}>
                                 Volver a los pedidos
-                            </Button>
+                        </Button>
                     </Paper>}
            
         </div>
