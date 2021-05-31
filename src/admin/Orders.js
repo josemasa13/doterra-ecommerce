@@ -10,15 +10,14 @@ import Paper from '@material-ui/core/Paper';
 import Checkbox from '@material-ui/core/Checkbox';
 import { Button } from '@material-ui/core';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
-import AddCircleIcon from '@material-ui/icons/AddCircle';
 import { useHistory } from "react-router-dom";
-import EditIcon from '@material-ui/icons/Edit';
 import { fetchProducts,deleteProducts,fetchPedidos } from '../utils/api';
 import { useEffect, useState } from 'react';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import VisibilityIcon from '@material-ui/icons/Visibility';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText'
+import Switch from '@material-ui/core/Switch';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+
 
 
 const useStyles = makeStyles((theme) => ({
@@ -49,29 +48,9 @@ function Loader(){
 export default function ProductsList() {
   const classes = useStyles();
   const history = useHistory();
-  const [checked, setChecked] = React.useState([]);
-  const [data, setOrdersInfo] = React.useState([]);
-  const [loading, setLoading] = React.useState(true)
+  var [data, setOrdersInfo] = React.useState([]);
+  var [loading, setLoading] = React.useState(true)
   let datos_eliminados = []
-
-  const handleChange = (event) => {
-
-    let index = -1;
-    for (var i = 0; i<datos_eliminados.length;i++) {
-      if (datos_eliminados[i] == event.target.value){
-        index = i
-      }
-    }
-    if(index != -1){
-      datos_eliminados.splice(index,1)
-      console.log("Eliminado "+event.target.value)
-      console.log(datos_eliminados)
-    }
-    else{
-      datos_eliminados.push(event.target.value)
-      console.log("Agregado "+event.target.value)
-    }
-  };
 
   function handleSection(sectionName) {
     history.push(`/${sectionName}`)
@@ -114,20 +93,20 @@ export default function ProductsList() {
   
   useEffect(() => {
     fetchPedidos()
-    .then((data) => {
+    .then((datos) => {
         console.log("Pedidos Inicio")
-        console.log(data)
+        /*var x ;
+        for (x in data) {
+          
+        }*/
+        datos.forEach(element => element["estatus"] = true);
         console.log("Pedidos Final")
-        setOrdersInfo(data)
+        console.log(datos)
+        setOrdersInfo(datos)
         setLoading(false);
     })
 }, [])
 
-let datos = [
-    {id:1,num:3,pedidos:[{nombre:"ALOE VERA", cantidad:5},{nombre:"ALOE", cantidad:2}], fecha:"21/02/2021",contacto:"eduardo.andremtz@hotmail.com"},
-    {id:2,num:2,pedidos:[{nombre:"Manzanilla", cantidad:10},{nombre:"MELISSA", cantidad:2}], fecha:"21/02/2021",contacto:"eduardo.andremtz@hotmail.com"},
-    {id:5,num:1,pedidos:[{nombre:"ALOE VERA", cantidad:5},{nombre:"ALOE", cantidad:2},{nombre:"Manzanilla", cantidad:10}], fecha:"24/02/2021",contacto:"eduardo.andremtz@hotmail.com"}
-]
   
 
   return (
@@ -147,7 +126,6 @@ let datos = [
         </TableRow>
             </TableHead>  
             <TableRow>
-            <TableCell align="left">Seleccionar</TableCell>
               <TableCell align="center">idProducto</TableCell>
               <TableCell align="left">Nombre de Producto</TableCell>
               <TableCell align="left">Cantidad</TableCell>
@@ -158,7 +136,6 @@ let datos = [
           <TableBody>
             {data.map((orders) => (
               <TableRow key={orders.id} >
-                <TableCell align="left"><Checkbox value={orders.id} onChange={handleChange} inputProps={{ 'aria-label': 'primary checkbox' }}/></TableCell>
                 <TableCell align="center">{orders.idproducto}</TableCell>
                 <TableCell align="center">{orders.nombreproducto}</TableCell>
                 <TableCell align="center">{orders.cantidad}</TableCell>
