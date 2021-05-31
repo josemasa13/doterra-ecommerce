@@ -1,22 +1,19 @@
 import React from "react";
 import { useForm } from "react-hook-form";
-import { FormControl, Typography } from '@material-ui/core';
+import { FormControl, Typography, Select, InputLabel } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
-import { Container } from '@material-ui/core';
+import { Container, MenuItem } from '@material-ui/core';
 import { fetchProduct } from '../utils/api'
 import { useHistory, useRouteMatch, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { updateProduct } from '../utils/api'
 import { Loader } from '../common/Loader'
-
-
-
-
+import { Controller } from "react-hook-form";
 
 const productData = {
     nombre: "Aceite Esencial",
@@ -53,7 +50,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 export default function Product(props) {
-    const { register, handleSubmit, watch, errors } = useForm();
+    const { register, handleSubmit, watch, errors, control } = useForm();
     const classes = useStyles();
     const [productInfo, setProductInfo] = useState({})
     const [productName, setProductName] = useState("")
@@ -61,6 +58,7 @@ export default function Product(props) {
     const [productPrice, setProductPrice] = useState("")
     const [productQty, setProductQty] = useState("")
     const [productSupply, setProductSupply] = useState("")
+    const [productCategory, setProductCategory] = useState("")
     const { productId } = useParams()
     const [ saved, setSaved ] = useState(false)
     const [loading, setLoading] = React.useState(true)
@@ -77,13 +75,16 @@ export default function Product(props) {
     useEffect(() => {
         fetchProduct(productId)
         .then((data) => {
+            console.log(data.body)
             setProductInfo(data.body)
             setProductName(data.body.productName)
             setProductDescription(data.body.productDesc)
             setProductPrice(data.body.productPrice)
             setProductQty(data.body.productQty)
             setProductSupply(data.body.productSupply)
+            setProductCategory(data.body.productCategory)
             setLoading(false)
+            console.log(productCategory)
         })
     }, [])
 
@@ -138,6 +139,26 @@ export default function Product(props) {
                             <TextField name="productSupply" fullWidth required id="standard-required" label="Cantidad en inventario" inputRef={register({ required: true })} InputLabelProps={{ shrink: true }} value = {productSupply} onChange={e => {
                                 setProductSupply(e.target.value)
                             }}/>
+
+                            <FormControl fullWidth >
+                              
+                              <Controller
+                              control={control}
+                              fullWidth
+                              name="productCategory"
+                              defaultValue={productCategory}
+                              as={
+                                <Select id="trinity-select"
+                                >
+                                  <MenuItem value="">Elige una categoría</MenuItem>
+                                  <MenuItem value="oil">Oil</MenuItem>
+                                  <MenuItem value="skincare">Skin Care</MenuItem>
+                                  <MenuItem value="haircare">Hair Care</MenuItem>
+                                  <MenuItem value="difusor">Difusor</MenuItem>
+                                </Select>
+                              }
+                              />
+                            </FormControl>
 
                             <Button type="submit" variant="contained" size="large" color="primary" className={classes.margin}>
                                 Guardar

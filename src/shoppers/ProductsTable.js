@@ -14,6 +14,7 @@ import { Button } from '@material-ui/core';
 import { useHistory } from "react-router-dom";
 import { Link as RouterLink } from 'react-router-dom';
 import { Loader } from '../common/Loader'
+import SearchBar from 'material-ui-search-bar';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -73,6 +74,11 @@ export default function ImageGridList() {
             }
             {!loading && <div>
               <h1>Catálogo de productos</h1>
+              <SearchBar
+                placeholder="Busca un producto"
+                autoFocus
+              />
+              
               <Grid container spacing={1}>
                 {products.map((product) => (
                   <Grid item xs={12} sm={4}>

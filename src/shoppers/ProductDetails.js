@@ -73,6 +73,7 @@ export default function ProductDetails(props) {
 
     const { productId } = useParams()
     const [loading, setLoading] = React.useState(true)
+    const [sendLoading, setSendLoading] = React.useState(false)
 
     useEffect(() => {
         fetchProduct(productId)
@@ -88,11 +89,14 @@ export default function ProductDetails(props) {
     }, [])
 
     const onSubmit = data => {
+        setSendLoading(true)
         data.idproducto = productId
         data.nombreproducto = productName
+        data.estatus = "activo"
         createPedido(data)
         .then((data) => {
             console.log(data)
+            setSendLoading(false)
         })
     };
 
@@ -153,9 +157,10 @@ export default function ProductDetails(props) {
                                 <TextField name="email"fullWidth required multiline id="standard-multiline" label="Tu correo electrónico" inputRef={register({ required: true })}  InputLabelProps={{ shrink: true }} />
                                 <TextField name="cantidad" fullWidth required id="standard-required" label="Cantidad requerida" inputRef={register({ required: true })} InputLabelProps={{ shrink: true }} />
                                 <TextField name="observaciones" fullWidth required multiline id="standard-multiline" label="Observaciones" rows={8} inputRef={register({ required: true })}  />
-                                <Button type="submit" variant="contained" size="large" color="primary" className={classes.margin}>
+                                {!setSendLoading && (<Button type="submit" variant="contained" size="large" color="primary" className={classes.margin}>
                                     Enviar
-                                </Button>
+                                </Button>)}
+                                {setSendLoading && <Loader />}
                             </form>
                         </Paper>
                     </Grid>

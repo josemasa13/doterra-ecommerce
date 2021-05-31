@@ -1,10 +1,9 @@
 import React from "react";
 import { useForm } from "react-hook-form";
-import { FormControl, Typography } from '@material-ui/core';
+import { Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
-import TextField from '@material-ui/core/TextField';
 import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import { Container } from '@material-ui/core';
@@ -14,17 +13,9 @@ import { createProduct } from '../utils/api'
 import { useEffect, useState } from 'react';
 import { Loader } from '../common/Loader'
 import { BrowserRouter as Router, Route, Redirect, Link, Switch, useHistory } from 'react-router-dom'
-
-
-
-
-
-const productData = {
-    nombre: "Aceite Esencial",
-    descripcion: "Este aceite logra curar todos los males",
-    precio: 400,
-    imagen: "https://cdn.shopify.com/s/files/1/1355/3237/products/doTERRA-Whisper-Essential-Oil-Blend-for-Women-0_1024x1024.jpg?v=1579880250"   
-}
+import InputLabel from "@material-ui/core/InputLabel";
+import { Controller } from "react-hook-form";
+import { FormControl, TextField, MenuItem, Select } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -56,7 +47,7 @@ function Saved(props){
 }
 
 export default function ProductAdditionForm(props) {
-    const { register, handleSubmit, watch, errors } = useForm();
+    const { register, handleSubmit, watch, errors, control } = useForm();
     const [ saved, setSaved ] = useState(false)
     const [loading, setLoading] = React.useState(false)
     const history = useHistory();
@@ -102,7 +93,26 @@ export default function ProductAdditionForm(props) {
                             <TextField name="productPrice" fullWidth required id="standard-required" label="Precio $" inputRef={register({ required: true })}/>
                             <TextField name="productQty" fullWidth required id="standard-required" label="Presentación ML" inputRef={register({ required: true })}/>
                             <TextField name="productSupply" fullWidth required id="standard-required" label="Cantidad en inventario" inputRef={register({ required: true })}/>
-                            <Button type="submit" variant="contained" size="large" color="primary" className={classes.margin}>
+                            <FormControl fullWidth >
+                              <InputLabel htmlFor="productCategory">
+                                  Elige una categoría de producto
+                              </InputLabel>
+                              <Controller
+                              control={control}
+                              fullWidth
+                              name="productCategory"
+                              as={
+                                <Select id="trinity-select">
+                                  <MenuItem value="">Elige una categoría</MenuItem>
+                                  <MenuItem value="oil">Oil</MenuItem>
+                                  <MenuItem value="skincare">Skin Care</MenuItem>
+                                  <MenuItem value="haircare">Hair Care</MenuItem>
+                                  <MenuItem value="difusor">Difusor</MenuItem>
+                                </Select>
+                              }
+                              />
+                            </FormControl>
+                            <Button type="submit" variant="contained" fullWidth color="primary" className={classes.margin}>
                                 Guardar
                             </Button>
                         </form>
