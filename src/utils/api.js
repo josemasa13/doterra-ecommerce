@@ -293,3 +293,23 @@ export function deleteProductImage(body){
         return res.json();
     })
 }
+
+export function updatePedido(pedidoId,pedidoData){
+    const endpoint = `${url}/pedidos/updatePedido`
+    
+    const requestOptions = {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json'},
+        body: JSON.stringify(
+            {
+                pedidoId,
+                ...pedidoData
+            })
+    };
+
+    return fetch(endpoint, requestOptions)
+            .then((res) => {
+                return res.json();
+            })
+    
+}
