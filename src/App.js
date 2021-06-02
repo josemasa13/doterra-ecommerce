@@ -36,7 +36,7 @@ function App() {
     <Router>
       <Switch>
         <Route exact path='/'>
-          <Redirect to='/productos' />
+          <Redirect to='/shop' />
         </Route>
 
         <Route exact path='/productos'>

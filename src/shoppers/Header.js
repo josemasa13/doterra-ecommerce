@@ -21,6 +21,10 @@ const headersData = [
   {
     label: "Productos",
     href: "/shop/productos",
+  },
+  {
+    label: "Eventos",
+    href: "/shop/eventos",
   }
 ];
 
@@ -139,9 +143,16 @@ export default function Header() {
   };
 
   const femmecubatorLogo = (
-    <Typography variant="h6" component="h1" className={logo}>
-      DoTerra
-    </Typography>
+    <Link {...{
+      component: RouterLink,
+      to: "/",
+      color: "inherit",
+      style: { textDecoration: "none" },
+    }}>
+      <Typography variant="h6" component="h1" className={logo}>
+        DoTerra
+      </Typography>
+    </Link>
   );
 
   const getMenuButtons = () => {

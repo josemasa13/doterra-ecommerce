@@ -92,7 +92,7 @@ export default function ProductDetails(props) {
         setSendLoading(true)
         data.idproducto = productId
         data.nombreproducto = productName
-        data.estatus = "activo"
+        data.estatus = true
         createPedido(data)
         .then((data) => {
             console.log(data)
@@ -154,13 +154,13 @@ export default function ProductDetails(props) {
                             <Typography variant='h6'>¿Te interesa este producto? Compártenos tu información y nos pondremos en contacto contigo</Typography>
                             <form onSubmit={handleSubmit(onSubmit)} className={classes.margin}>
                                 <TextField name="nombre" fullWidth required id="standard-required" label="Tu nombre" inputRef={register({ required: true })} InputLabelProps={{ shrink: true }} />
-                                <TextField name="email"fullWidth required multiline id="standard-multiline" label="Tu correo electrónico" inputRef={register({ required: true })}  InputLabelProps={{ shrink: true }} />
-                                <TextField name="cantidad" fullWidth required id="standard-required" label="Cantidad requerida" inputRef={register({ required: true })} InputLabelProps={{ shrink: true }} />
+                                <TextField name="email" fullWidth required multiline type="email" id="standard-multiline" label="Tu correo electrónico" inputRef={register({ required: true })}  InputLabelProps={{ shrink: true }} />
+                                <TextField name="cantidad" fullWidth required id="standard-required" type="number" label="Cantidad requerida" inputRef={register({ required: true })} InputLabelProps={{ shrink: true }} />
                                 <TextField name="observaciones" fullWidth required multiline id="standard-multiline" label="Observaciones" rows={8} inputRef={register({ required: true })}  />
-                                {!setSendLoading && (<Button type="submit" variant="contained" size="large" color="primary" className={classes.margin}>
+                                {!sendLoading && (<Button type="submit" variant="contained" size="large" color="primary" className={classes.margin}>
                                     Enviar
                                 </Button>)}
-                                {setSendLoading && <Loader />}
+                                {sendLoading && <Loader />}
                             </form>
                         </Paper>
                     </Grid>

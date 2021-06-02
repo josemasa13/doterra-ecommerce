@@ -23,9 +23,11 @@ export function createProduct(productData){
         headers: { 'Content-Type': 'application/json'},
         body: JSON.stringify(productData)
     };
-    
+    console.log("creating product", productData)
+
     return fetch(endpoint, requestOptions)
             .then((res) => {
+                console.log(res)
                 return res.json();
             })
 }
@@ -201,4 +203,93 @@ export function fetchPedido(pedidoId){
             .then((res) => {
                 return res.json();
             })
+}
+
+export function fetchCategories(){
+    const endpoint = `${url}/products/getCategories`
+    
+    const requestOptions = {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json'},
+    };
+
+    return fetch(endpoint, requestOptions)
+    .then((res) => {
+        return res.json();
+    })
+}
+
+export function filterProducts(filterData){
+    const endpoint = `${url}/products/filterProducts`
+    
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json'},
+        body: JSON.stringify(filterData)
+    };
+
+    return fetch(endpoint, requestOptions)
+    .then((res) => {
+        return res.json();
+    })
+}
+
+export function searchProducts(searchData){
+    const endpoint = `${url}/products/searchProduct`
+    
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json'},
+        body: JSON.stringify(searchData)
+    };
+
+
+    return fetch(endpoint, requestOptions)
+    .then((res) => {
+        return res.json();
+    })
+}
+
+export function addProductImage(formData){
+    const endpoint = `${url}/products/addProductImage`
+    
+    const requestOptions = {
+        method: 'POST',
+        body: formData
+    };
+
+    return fetch(endpoint, requestOptions)
+    .then((res) => {
+        return res.json();
+    })
+}
+
+export function linkExistentProductToImage(linkData){
+    const endpoint = `${url}/products/linkProductImage`
+    
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json'},
+        body: JSON.stringify(linkData)
+    };
+
+    return fetch(endpoint, requestOptions)
+    .then((res) => {
+        return res.json();
+    })
+}
+
+export function deleteProductImage(body){
+    const endpoint = `${url}/products/deleteProductImage`
+    
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json'},
+        body: JSON.stringify(body)
+    };
+
+    return fetch(endpoint, requestOptions)
+    .then((res) => {
+        return res.json();
+    })
 }

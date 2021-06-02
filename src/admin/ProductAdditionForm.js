@@ -9,7 +9,7 @@ import Button from '@material-ui/core/Button';
 import { Container } from '@material-ui/core';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import IconButton from '@material-ui/core/IconButton';
-import { createProduct } from '../utils/api'
+import { createProduct, addProductImage } from '../utils/api'
 import { useEffect, useState } from 'react';
 import { Loader } from '../common/Loader'
 import { BrowserRouter as Router, Route, Redirect, Link, Switch, useHistory } from 'react-router-dom'
@@ -37,6 +37,10 @@ const useStyles = makeStyles((theme) => ({
   margin: {
     margin: theme.spacing(1),
   },
+
+  input: {
+    display: "none"
+  }
 }));
 
 function Saved(props){
@@ -50,17 +54,48 @@ export default function ProductAdditionForm(props) {
     const { register, handleSubmit, watch, errors, control } = useForm();
     const [ saved, setSaved ] = useState(false)
     const [loading, setLoading] = React.useState(false)
+    const [selectedImage, setSelectedImage] = React.useState(null)
     const history = useHistory();
+
+    const fileChangedHandler = (event) => {
+      setSelectedImage(event.target.files[0])
+      console.log(event.target.files[0])
+    }
 
 
     const onSubmit = data => {
-        setLoading(true)
-        createProduct(data)
-        .then((data) => {
-            setSaved(true);
-            setLoading(false);
-            history.push('/productos')
-        })
+      data.productPrice = parseInt(data.productPrice)
+        if (selectedImage){
+          setLoading(true)
+          const formData = new FormData()
+          formData.append(
+            'image',
+            selectedImage,
+            selectedImage.name
+          )
+
+          addProductImage(formData)
+          .then((res) => {
+            data.productImages = [res.imageUrl]
+            createProduct(data)
+            .then((res) => {
+                alert(JSON.stringify(res.body))
+                setSaved(true);
+                setLoading(false);
+                history.push('/productos')
+            })
+          })
+        } else{
+          setLoading(true)
+          createProduct(data)
+          .then((data) => {
+              setSaved(true);
+              setLoading(false);
+              history.push('/productos')
+          })
+        }
+
+        
     };
 
     const classes = useStyles();
@@ -74,11 +109,15 @@ export default function ProductAdditionForm(props) {
                         <Grid container spacing={3}>
                             <Grid item xs={3} />
                             <Grid alignContents="center" item xs={6}>
-                                <IconButton aria-label="Add image">
-                                    <AddCircleIcon fontSize="large"/>
+                              <input accept="image/*" className={classes.input} id="icon-button-file" type="file" onChange={fileChangedHandler}/>
+                              <label htmlFor="icon-button-file">
+                                <IconButton color="primary" aria-label="upload picture" component="span">
+                                  <AddCircleIcon fontSize="large"/>
                                 </IconButton>
+                              </label>
+                                
                                 <br/>
-                                Agregar imagen
+                                {selectedImage ? selectedImage.name : "Agregar imagen"}
                             </Grid>
                             <Grid item xs={3} />
                         </Grid>
@@ -90,9 +129,9 @@ export default function ProductAdditionForm(props) {
                         <form onSubmit={handleSubmit(onSubmit)} className={classes.margin}>
                             <TextField name="productName" fullWidth required id="standard-required" label="Nombre de producto" inputRef={register({ required: true })} />
                             <TextField name="productDesc"fullWidth required multiline id="standard-multiline" label="Descripción del producto" rows={8} inputRef={register({ required: true })}  />
-                            <TextField name="productPrice" fullWidth required id="standard-required" label="Precio $" inputRef={register({ required: true })}/>
-                            <TextField name="productQty" fullWidth required id="standard-required" label="Presentación ML" inputRef={register({ required: true })}/>
-                            <TextField name="productSupply" fullWidth required id="standard-required" label="Cantidad en inventario" inputRef={register({ required: true })}/>
+                            <TextField name="productPrice" fullWidth required type="number" id="standard-required" label="Precio $" inputRef={register({ required: true })}/>
+                            <TextField name="productQty" fullWidth required  type="number" id="standard-required" label="Presentación ML" inputRef={register({ required: true })}/>
+                            <TextField name="productSupply" fullWidth required type="number" id="standard-required" label="Cantidad en inventario" inputRef={register({ required: true })}/>
                             <FormControl fullWidth >
                               <InputLabel htmlFor="productCategory">
                                   Elige una categoría de producto
@@ -104,10 +143,10 @@ export default function ProductAdditionForm(props) {
                               as={
                                 <Select id="trinity-select">
                                   <MenuItem value="">Elige una categoría</MenuItem>
-                                  <MenuItem value="oil">Oil</MenuItem>
-                                  <MenuItem value="skincare">Skin Care</MenuItem>
-                                  <MenuItem value="haircare">Hair Care</MenuItem>
-                                  <MenuItem value="difusor">Difusor</MenuItem>
+                                  <MenuItem value="Oil">Oil</MenuItem>
+                                  <MenuItem value="SkinCare">Skin Care</MenuItem>
+                                  <MenuItem value="HairCare">Hair Care</MenuItem>
+                                  <MenuItem value="Difusor">Difusor</MenuItem>
                                 </Select>
                               }
                               />
