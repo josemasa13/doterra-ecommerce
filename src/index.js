@@ -4,19 +4,17 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { Auth0Provider } from '@auth0/auth0-react';
+import { BrowserRouter as Router, Route, Redirect, Link, Switch } from 'react-router-dom'
 import config from './auth_config.json';
 
 
-
 ReactDOM.render(
-  <React.StrictMode>
-    <Auth0Provider
-        domain={config.domain}
-        clientId={config.clientId}
-        redirectUri={window.location.origin}>      
-      <App />
-    </Auth0Provider>
-  </React.StrictMode>,
+  <Auth0Provider
+      domain="doterrawebsite.us.auth0.com"
+      clientId="mtBEL8wmgbCirjgaTth60yceRDVDpqkY"
+      redirectUri="http://localhost:3000/productos">      
+    <App />
+  </Auth0Provider>,
   document.getElementById('root')
 );
 

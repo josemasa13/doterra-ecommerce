@@ -65,6 +65,9 @@ export default function ProductDetails(props) {
     const [productPrice, setProductPrice] = useState("")
     const [productQty, setProductQty] = useState("")
     const [productSupply, setProductSupply] = useState("")
+    const [productImages, setProductImages] = useState()
+    const [interest, setInterest] = useState(false)
+    const history = useHistory();
 
     const [clientName, setClientName] = useState("")
     const [clientEmail, setClientEmail] = useState("")
@@ -84,6 +87,7 @@ export default function ProductDetails(props) {
             setProductPrice(data.body.productPrice)
             setProductQty(data.body.productQty)
             setProductSupply(data.body.productSupply)
+            setProductImages(data.body.productImages)
             setLoading(false)
         })
     }, [])
@@ -97,6 +101,7 @@ export default function ProductDetails(props) {
         .then((data) => {
             console.log(data)
             setSendLoading(false)
+            setInterest(true)
         })
     };
 
@@ -125,7 +130,7 @@ export default function ProductDetails(props) {
                                 <Grid alignContents="center" item xs={6}>
                                     <CardMedia
                                         className={classes.media}
-                                        image={productData.imagen}
+                                        image={productImages}
                                         title="Paella dish"
                                     />
                                 </Grid>
@@ -157,9 +162,10 @@ export default function ProductDetails(props) {
                                 <TextField name="email" fullWidth required multiline type="email" id="standard-multiline" label="Tu correo electrónico" inputRef={register({ required: true })}  InputLabelProps={{ shrink: true }} />
                                 <TextField name="cantidad" fullWidth required id="standard-required" type="number" label="Cantidad requerida" inputRef={register({ required: true })} InputLabelProps={{ shrink: true }} />
                                 <TextField name="observaciones" fullWidth required multiline id="standard-multiline" label="Observaciones" rows={8} inputRef={register({ required: true })}  />
-                                {!sendLoading && (<Button type="submit" variant="contained" size="large" color="primary" className={classes.margin}>
+                                {!sendLoading && !interest && (<Button type="submit" variant="contained" size="large" color="primary" className={classes.margin}>
                                     Enviar
                                 </Button>)}
+                                {!sendLoading && interest && (<Typography variant="h5">Se ha registrado tu interés en el producto. Nos pondremos en contacto contigo a la brevedad</Typography>)}
                                 {sendLoading && <Loader />}
                             </form>
                         </Paper>

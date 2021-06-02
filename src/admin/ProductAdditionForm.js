@@ -79,7 +79,6 @@ export default function ProductAdditionForm(props) {
             data.productImages = [res.imageUrl]
             createProduct(data)
             .then((res) => {
-                alert(JSON.stringify(res.body))
                 setSaved(true);
                 setLoading(false);
                 history.push('/productos')

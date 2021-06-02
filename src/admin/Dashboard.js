@@ -149,8 +149,6 @@ export default function Dashboard(props) {
         setOpen(false);
     };
 
-    console.log(isAuthenticated)
-
     function handleSection(sectionName) {
         setSection(sectionName)
         history.push(`/${sectionName}`)
@@ -183,10 +181,10 @@ export default function Dashboard(props) {
                 {section}
             </Typography>
 
-            <LoginButton
-             />
+            {!isAuthenticated && <LoginButton
+             />}
 
-            <LogoutButton />
+            {isAuthenticated && <LogoutButton />}
 
             <IconButton color="inherit">
                 <PersonIcon />
@@ -233,7 +231,9 @@ export default function Dashboard(props) {
 
         <main className={classes.content}>
             <div className={classes.appBarSpacer} />
-            { props.main }
+
+            {isAuthenticated && props.main }
+            {!isAuthenticated && <h1>Debes iniciar sesión para poder acceder a esta vista</h1>}
         </main>
         </div>
     );

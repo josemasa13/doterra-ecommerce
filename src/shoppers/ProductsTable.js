@@ -48,6 +48,10 @@ const useStyles = makeStyles((theme) => ({
 
   image: {
     maxWidth: "100%"
+  },
+
+  searchBar: {
+    margin: '0.5em'
   }
   
 }));
@@ -173,7 +177,7 @@ export default function ImageGridList() {
                 </Grid>
             }
             {!loading && <Grid container spacing={1}>
-                <Grid item xs={12}>
+                <Grid item xs={12} className={classes.searchBar}>
                   <Grid container justify="center" alignItems="center">
                     <TextField
                       className={classes.margin}

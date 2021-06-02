@@ -22,10 +22,6 @@ const headersData = [
     label: "Productos",
     href: "/shop/productos",
   },
-  {
-    label: "Eventos",
-    href: "/shop/eventos",
-  }
 ];
 
 const useStyles = makeStyles(() => ({

@@ -80,9 +80,6 @@ function App() {
           <ProductFeed /> 
         </Route>
 
-        <Route exact path='/shop/nosotros'>
-          <h1>Esta es información sobre nosotros</h1>
-        </Route>
 
         <Route exact path='/shop/:productId'>
           <ProductDetailsScreen />
