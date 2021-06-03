@@ -12,7 +12,7 @@ ReactDOM.render(
   <Auth0Provider
       domain="doterrawebsite.us.auth0.com"
       clientId="mtBEL8wmgbCirjgaTth60yceRDVDpqkY"
-      redirectUri="https://admiring-boyd-f6c5cb.netlify.app/productos">      
+      redirectUri="http://localhost:3000/productos">      
     <App />
   </Auth0Provider>,
   document.getElementById('root')
