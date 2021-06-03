@@ -36,7 +36,7 @@ function LoginButton() {
   const { loginWithRedirect, isAuthenticated } = useAuth0();
   return (
       !isAuthenticated && (
-          <Button onClick={() => loginWithRedirect()}>Log In</Button>
+          <Button onClick={() => loginWithRedirect()}>Iniciar Sesión</Button>
       )
       
   );
@@ -46,9 +46,9 @@ const LogoutButton = () => {
   const { logout } = useAuth0();
 
   return (
-    <button onClick={() => logout({ returnTo: window.location.origin })}>
-      Log Out
-    </button>
+    <Button onClick={() => logout({ returnTo: window.location.origin })}>
+      Cerrar Sesión
+    </Button>
   );
 };
 
@@ -131,6 +131,10 @@ const useStyles = makeStyles((theme) => ({
   fixedHeight: {
     height: 240,
   },
+
+  boton: {
+    color: "#fffff"
+  }
 }));
 
 export default function Dashboard(props) {
@@ -181,17 +185,16 @@ export default function Dashboard(props) {
                 {section}
             </Typography>
 
-            {!isAuthenticated && <LoginButton
-             />}
+            {!isAuthenticated && <LoginButton className={classes.boton}/>}
 
-            {isAuthenticated && <LogoutButton />}
+            {isAuthenticated && <LogoutButton className={classes.boton}/>}
 
             <IconButton color="inherit">
                 <PersonIcon />
             </IconButton>
             </Toolbar>
         </AppBar>
-        <Drawer
+        {isAuthenticated && <Drawer
             variant="permanent"
             classes={{
             paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
@@ -227,11 +230,10 @@ export default function Dashboard(props) {
                 </div>
             </List>
 
-        </Drawer>
+        </Drawer>}
 
         <main className={classes.content}>
             <div className={classes.appBarSpacer} />
-
             {isAuthenticated && props.main }
             {!isAuthenticated && <h1>Debes iniciar sesión para poder acceder a esta vista</h1>}
         </main>
